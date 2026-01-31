@@ -55,8 +55,6 @@ public class GameManager : MonoBehaviour
 
     // TODO: Map levels (name, music, high-score, etc. info) to SceneIDs!
 
-    // TODO: Store current levelID, or -1 if we're not in Playing state!
-
     // Method to change game state
     public void ChangeGameState(GameState newState)
     {
@@ -75,6 +73,11 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 // Prepare for gameplay
                 CurrentPlayingState = PlayingState.Normal;
+
+                // TODO: Use level selection menu info instead, to load
+                // a specific scene.
+                LoadNextScene();
+
                 break;
         }
 
@@ -95,6 +98,8 @@ public class GameManager : MonoBehaviour
                 break;
             case PlayingState.LevelComplete:
                 // Handle leaving LevelComplete
+                // TODO: Show a level complete menu instead
+                LoadNextScene();
                 break;
 
             case PlayingState.Paused:
@@ -135,9 +140,9 @@ public class GameManager : MonoBehaviour
     {
         //sets scene to the current scene restarting
         var currentScene = SceneManager.GetActiveScene();
+        var nextID = currentScene.buildIndex + 1;
 
-        //FIXME: Check if we're exceeding scene count!
-        SceneManager.LoadScene(currentScene.buildIndex + 1);
+        SceneManager.LoadScene(nextID);
     }
 
     public void ReloadCurrentScene()
