@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class hostStats : host
+public class CatHostStats : host
 {
     public float timer = 10f;
     private float maxTimer = 20f;
