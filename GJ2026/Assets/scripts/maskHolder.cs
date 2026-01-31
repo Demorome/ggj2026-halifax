@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -27,6 +28,7 @@ public class maskHolder : MonoBehaviour
         other.transform.tag = "area";
         equippedMask.transform.parent.position = new Vector3(0,0,0);
         
+        other.transform.parent.gameObject.GetComponent<catController>().MaskControl();
 
         equippedMask.transform.parent.tag = "interactArea";
         equippedMask.GetComponent<host>().equipped = false;

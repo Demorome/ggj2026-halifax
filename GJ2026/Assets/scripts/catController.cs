@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class catController : MonoBehaviour
+public class catController : entity
 {
     public GameObject detection;
     public Rigidbody rb;
@@ -36,5 +36,9 @@ public class catController : MonoBehaviour
         {
             player.GetComponent<playerController>().finalHealth--;
         }
+    }
+    public override void MaskControl()
+    {
+        this.enabled = false;
     }
 }
