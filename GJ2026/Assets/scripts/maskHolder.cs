@@ -28,7 +28,7 @@ public class maskHolder : MonoBehaviour
         other.transform.tag = "area";
         equippedMask.transform.parent.position = new Vector3(0,0,0);
         if(other.transform.parent.gameObject.tag == "enemy"){
-            other.transform.parent.gameObject.GetComponent<catController>().MaskControl();
+            other.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
         }
         equippedMask.transform.parent.tag = "interactArea";
         equippedMask.GetComponent<host>().equipped = false;

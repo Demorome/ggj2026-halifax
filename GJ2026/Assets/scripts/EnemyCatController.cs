@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class catController : EnemyEntity
+public class EnemyCatController : EnemyEntity
 {
     public GameObject detection;
     public Rigidbody rb;
