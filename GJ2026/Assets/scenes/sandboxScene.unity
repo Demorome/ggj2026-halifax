@@ -576,7 +576,7 @@ GameObject:
   - component: {fileID: 289914343}
   m_Layer: 0
   m_Name: catA
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -913,7 +913,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  MaxHealthTimer: 10
+  timer: 10
+  mass: 1
   playerController: {fileID: 1097400044}
 --- !u!1 &477078319
 GameObject:
@@ -1641,7 +1642,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  MaxHealthTimer: 10
+  timer: 10
+  mass: 1
   playerController: {fileID: 1097400044}
 --- !u!1 &1384415943
 GameObject:
