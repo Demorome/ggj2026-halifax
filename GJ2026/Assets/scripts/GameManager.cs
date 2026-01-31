@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     public GameObject GameOverScreenPrefab;
     private GameObject GameOverScreen;
 
+    public GameObject PauseScreenPrefab;
+    private GameObject PauseScreen;
+
     // Global game data
     // TODO: Completed levels? High-scores for each level?
 
@@ -97,9 +100,7 @@ public class GameManager : MonoBehaviour
             case PlayingState.Paused:
                 // Handle leaving Pause menu
                 Time.timeScale = 1f; // Resume time
-
-                // TODO: Hide/destroy the Pause screen overlay!
-
+                Destroy(PauseScreen);
                 break;
             case PlayingState.GameOver:
                 // Handle leaving the game over screen
@@ -120,6 +121,7 @@ public class GameManager : MonoBehaviour
 
             case PlayingState.Paused:
                 Time.timeScale = 0f; // Stop time
+                PauseScreen = Instantiate(PauseScreenPrefab);
                 break;
             case PlayingState.GameOver:
                 GameOverScreen = Instantiate(GameOverScreenPrefab);
