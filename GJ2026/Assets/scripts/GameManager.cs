@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentGameState == newState) return;
 
-        Debug.Log("Exiting Game state: " +  CurrentPlayingState);
+        Debug.Log("Exiting Game state: " +  CurrentGameState);
 
         Debug.Log("Entering new Game state: " +  newState);
 
