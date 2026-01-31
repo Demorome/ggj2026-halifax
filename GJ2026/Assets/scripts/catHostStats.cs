@@ -15,9 +15,11 @@ public class hostStats : host
     // Update is called once per frame
     void Update()
     {
+        
         if(equipped == true)
         {
             if(timer > 0){
+                Debug.Log(transform.name);
                 timer = timer-Time.deltaTime;
                 playerController.updateHealth(timer);
                 //Debug.Log(timer);

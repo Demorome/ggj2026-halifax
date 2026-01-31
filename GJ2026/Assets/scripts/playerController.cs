@@ -13,7 +13,7 @@ public class playerController : MonoBehaviour
     private Vector3 jump =  Vector3.zero;
     public GameObject maskHolder;
     public Collider collider;
-    public float health = 42f;
+    //public float health = 42f;
     public GameObject healthText;
     public float finalHealth = 20f;
     public GameObject sceneManager;
