@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0bad11f06174e844086495d1a3f6d7c4
+timeCreated: 1481545171
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 78201
+  packageName: Simple Houses Lite
+  packageVersion: 1.0
+  assetPath: Assets/Simple Houses Lite/Mesh/Materials/ground.mat
+  uploadId: 151037
