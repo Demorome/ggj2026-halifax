@@ -562,6 +562,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &241348767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 241348768}
+  - component: {fileID: 241348769}
+  m_Layer: 0
+  m_Name: FieldOfView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &241348768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241348767}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 289914340}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &241348769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241348767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a3dab88dde90598a42cb4536d7fff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFieldOfView
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 25
+  fov: 90
+  viewDistance: 50
 --- !u!1 &289914339
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,6 +645,7 @@ Transform:
   m_Children:
   - {fileID: 1523675694}
   - {fileID: 796416061}
+  - {fileID: 241348768}
   m_Father: {fileID: 477078320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &289914341
@@ -637,6 +687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8965bd23cfefb2f4983a61c4c9c988fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  EnemyFieldOfView: {fileID: 241348769}
   detection: {fileID: 1523675693}
   rb: {fileID: 289914341}
   player: {fileID: 1097400040}

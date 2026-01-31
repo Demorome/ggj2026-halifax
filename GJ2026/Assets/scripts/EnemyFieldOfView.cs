@@ -91,6 +91,7 @@ public class EnemyFieldOfView : MonoBehaviour
         {
             if (hitObject.tag == "Player")
             {
+                Debug.Log("Player found by enemy!");
                 HasSeenPlayer = true;
                 break;
             }
