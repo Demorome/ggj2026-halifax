@@ -20,7 +20,7 @@ public class hostStats : host
         if(equipped == true)
         {
             if(timer > 0){
-                Debug.Log(transform.name);
+                //Debug.Log(transform.name);
                 timer = timer-Time.deltaTime;
                 playerController.updateHealth(timer);
                 //Debug.Log(timer);
