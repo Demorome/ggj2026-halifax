@@ -24,24 +24,22 @@ public class EnemyFieldOfView : MonoBehaviour
     private Mesh mesh;
     public float fov = 90f;
     public float viewDistance = 50f;
-    private Vector3 origin;
-    private float startingAngle;
 
     private void Start() {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
-        origin = Vector3.zero;
     }
 
     private void LateUpdate() {
         int rayCount = 50;
-        float angle = startingAngle;
+        float angle = 0; //startingAngle; // FIXME!
         float angleIncrease = fov / rayCount;
 
         Vector3[] vertices = new Vector3[rayCount + 1 + 1];
         Vector2[] uv = new Vector2[vertices.Length];
         int[] triangles = new int[rayCount * 3];
 
+        Vector3 origin = transform.position;
         vertices[0] = origin;
 
         HashSet<GameObject> hitObjects = new();
@@ -61,9 +59,11 @@ public class EnemyFieldOfView : MonoBehaviour
             if (!hit || hitInfo.collider == null) {
                 // No hit
                 vertex = origin + vectorFromAngle * viewDistance;
+                Debug.DrawRay(origin, vectorFromAngle * viewDistance, Color.red);
             } else {
                 // Hit object
                 vertex = hitInfo.point;
+                Debug.DrawRay(origin, vectorFromAngle * hitInfo.distance, Color.red);
 
                 var hitObject = hitInfo.transform.gameObject;
                 hitObjects.Add(hitObject);
@@ -91,27 +91,10 @@ public class EnemyFieldOfView : MonoBehaviour
         {
             if (hitObject.tag == "Player")
             {
-                Debug.Log("Player found by enemy!");
+                Debug.Log("Player was spotted by an enemy!");
                 HasSeenPlayer = true;
                 break;
             }
         }
     }
-
-    public void SetOrigin(Vector3 origin) {
-        this.origin = origin;
-    }
-
-    public void SetAimDirection(Vector3 aimDirection) {
-        startingAngle = UtilsClass.GetAngleFromVectorFloat(aimDirection) + fov / 2f;
-    }
-
-    public void SetFoV(float fov) {
-        this.fov = fov;
-    }
-
-    public void SetViewDistance(float viewDistance) {
-        this.viewDistance = viewDistance;
-    }
-
 }

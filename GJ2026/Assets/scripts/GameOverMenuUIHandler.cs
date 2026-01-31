@@ -24,8 +24,8 @@ public class GameOverMenuUIHandler : MonoBehaviour
 
     public void OnClickRestartButton()
     {
-        gameManager.ReloadCurrentScene();
         gameManager.ChangePlayingState(GameManager.PlayingState.Normal);
+        gameManager.ReloadCurrentScene();
     }
 
     public void OnClickExitToMainMenuButton()
