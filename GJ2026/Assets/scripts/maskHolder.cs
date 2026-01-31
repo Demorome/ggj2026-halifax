@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class maskHolder : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class maskHolder : MonoBehaviour
         Debug.Log(equippedMask);
         equippedMask.GetComponent<host>().equipped = true;
         equippedMask.transform.parent.SetParent(transform, false);
+        
+        equippedMask.transform.parent.position = new Vector3(0,0,0);
 
 
     }
