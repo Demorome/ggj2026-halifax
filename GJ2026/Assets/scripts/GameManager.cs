@@ -129,6 +129,15 @@ public class GameManager : MonoBehaviour
         CurrentPlayingState = newState;
     }
 
+    public void LoadNextScene()
+    {
+        //sets scene to the current scene restarting
+        var currentScene = SceneManager.GetActiveScene();
+
+        //FIXME: Check if we're exceeding scene count!
+        SceneManager.LoadScene(currentScene.buildIndex + 1);
+    }
+
     public void ReloadCurrentScene()
     {
         //sets scene to the current scene restarting
