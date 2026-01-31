@@ -6,6 +6,7 @@ TagManager:
   tags:
   - environment
   - interactArea
+  - area
   layers:
   - Default
   - TransparentFX
