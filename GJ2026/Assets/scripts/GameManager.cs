@@ -148,8 +148,8 @@ public class GameManager : MonoBehaviour
     public void ReloadCurrentScene()
     {
         //sets scene to the current scene restarting
-        SceneManager.SetActiveScene(SceneManager.GetActiveScene());
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.SetActiveScene(SceneManager.GetActiveScene());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ShowLevelCompleteScreen()
