@@ -9,6 +9,7 @@ public class playerController : MonoBehaviour
     public Rigidbody rb;
 
     private Vector3 jump =  Vector3.zero;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

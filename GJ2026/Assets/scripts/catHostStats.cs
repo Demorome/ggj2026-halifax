@@ -1,9 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class maskHolder : MonoBehaviour
+public class hostStats : host
 {
-    int mask = 1;
-    public GameObject equippedMask;
+    public float timer = 10f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,6 +13,10 @@ public class maskHolder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(equipped == true)
+        {
+            timer = timer-Time.deltaTime;
+            Debug.Log(timer);
+        }
     }
 }
