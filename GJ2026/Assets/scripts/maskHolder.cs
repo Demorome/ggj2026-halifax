@@ -21,6 +21,11 @@ public class maskHolder : MonoBehaviour
 
     public void equipMask(GameObject other)
     {
+        equippedMask.GetComponent<host>().equipped = false;
         Debug.Log(other);
+        equippedMask = other.transform.GetChild(0).gameObject;
+        Debug.Log(equippedMask);
+        equippedMask.GetComponent<host>().equipped = true;
+
     }
 }
