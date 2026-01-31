@@ -5,6 +5,7 @@ public class hostStats : host
 {
     public float timer = 10f;
     private float maxTimer = 20f;
+    public float mass = 1f;
     public playerController playerController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
