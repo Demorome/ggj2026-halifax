@@ -14,16 +14,4 @@ public class sceneManager : MonoBehaviour
     {
         
     }
-
-    public void gameOver()
-    {
-        Debug.Log("game over");
-        //sets scene to the current scene restarting
-        SceneManager.SetActiveScene(SceneManager.GetActiveScene());
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void victory()
-    {
-        //SceneManager.SetActiveScene();
-    }
 }

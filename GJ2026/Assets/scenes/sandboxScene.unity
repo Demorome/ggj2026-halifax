@@ -664,50 +664,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &323744480
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 323744482}
-  - component: {fileID: 323744481}
-  m_Layer: 0
-  m_Name: sceneManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &323744481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 323744480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 979d1426ffac07f479d02ea156166ef6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
---- !u!4 &323744482
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 323744480}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.0405, y: -1.08, z: -3.73796}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &333506084
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  timer: 10
+  MaxHealthTimer: 10
   playerController: {fileID: 1097400044}
 --- !u!1 &477078319
 GameObject:
@@ -1421,7 +1377,6 @@ MonoBehaviour:
   collider: {fileID: 1097400042}
   healthText: {fileID: 1183918396}
   finalHealth: 20
-  sceneManager: {fileID: 323744480}
 --- !u!1 &1183918396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1686,7 +1641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  timer: 10
+  MaxHealthTimer: 10
   playerController: {fileID: 1097400044}
 --- !u!1 &1384415943
 GameObject:
@@ -1922,6 +1877,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::maskHolder
   equippedMask: {fileID: 1262138732}
+--- !u!1001 &2065974643
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 946656046808490783, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.6441
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.6297
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
 --- !u!1 &2117584849
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,10 +1992,10 @@ BoxCollider:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2065974643}
   - {fileID: 132849259}
   - {fileID: 917015255}
   - {fileID: 348103462}
   - {fileID: 477078320}
   - {fileID: 229931807}
   - {fileID: 26753882}
-  - {fileID: 323744482}

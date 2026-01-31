@@ -9,8 +9,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // Enum defining game states
-    public enum GameState { Title, Playing, Paused, GameOver }
-    public GameState CurrentState { get; private set; }
+    public enum GameState { MainMenu, Playing }
+    public GameState CurrentGameState { get; private set; }
+
+    public enum PlayingState { Normal, Paused, LevelComplete, GameOver }
+    public PlayingState CurrentPlayingState { get; private set; }
 
     // Global game data
     // TODO: Completed levels? High-scores for each level?
@@ -33,7 +36,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Set initial state
-        CurrentState = GameState.Title;
+        CurrentGameState = GameState.MainMenu;
     }
 
     // Method to add score (callable from anywhere)
@@ -49,30 +52,91 @@ public class GameManager : MonoBehaviour
     // TODO: Store current levelID, or -1 if we're not in Playing state!
 
     // Method to change game state
-    public void ChangeState(GameState newState)
+    public void ChangeGameState(GameState newState)
     {
-        if (CurrentState == newState) return;
+        if (CurrentGameState == newState) return;
 
-        CurrentState = newState;
+        Debug.Log("Exiting Game state: " +  CurrentPlayingState);
+
+        Debug.Log("Entering new Game state: " +  newState);
 
         // Execute state-specific processing
         switch (newState)
         {
-            case GameState.Title:
+            case GameState.MainMenu:
                 // Prepare title screen
                 break;
             case GameState.Playing:
                 // Prepare for gameplay
-                Time.timeScale = 1f; // Resume time
-                break;
-            case GameState.Paused:
-                // Handle pause
-                Time.timeScale = 0f; // Stop time
-                break;
-            case GameState.GameOver:
-                // Handle game over
+                CurrentPlayingState = PlayingState.Normal;
                 break;
         }
+
+        CurrentGameState = newState;
+    }
+
+    public void ChangePlayingState(PlayingState newState)
+    {
+        if (CurrentPlayingState == newState) return;
+
+        Debug.Log("Exiting Playing state: " +  CurrentPlayingState);
+
+        // Handle exiting-state logic
+        switch (CurrentPlayingState)
+        {
+            case PlayingState.Normal:
+                // Handle leaving normal gameplay mode.
+                break;
+            case PlayingState.LevelComplete:
+                // Handle leaving LevelComplete
+                break;
+
+            case PlayingState.Paused:
+                // Handle leaving Pause menu
+                Time.timeScale = 1f; // Resume time
+
+                // TODO: Hide/destroy the Pause screen overlay!
+
+                break;
+            case PlayingState.GameOver:
+                // Handle leaving the game over screen
+
+                // TODO: Hide/destroy the GameOver screen overlay!
+                break;
+        }
+
+        Debug.Log("Entering new Playing state: " +  newState);
+
+        // Handle entering-state logic
+        switch (newState)
+        {
+            case PlayingState.Normal:
+                break;
+            case PlayingState.LevelComplete:
+                break;
+
+            case PlayingState.Paused:
+                Time.timeScale = 0f; // Stop time
+                break;
+            case PlayingState.GameOver:
+                // TODO: Instantiate the GameOver screen overlay!
+                break;
+        }
+
+        CurrentPlayingState = newState;
+    }
+
+    public void ReloadCurrentScene()
+    {
+
+        //sets scene to the current scene restarting
+        SceneManager.SetActiveScene(SceneManager.GetActiveScene());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ShowLevelCompleteScreen()
+    {
+        //SceneManager.SetActiveScene();
     }
 
     // Example calls from other scripts:

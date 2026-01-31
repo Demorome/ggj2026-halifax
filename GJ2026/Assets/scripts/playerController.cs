@@ -16,13 +16,14 @@ public class playerController : MonoBehaviour
     //public float health = 42f;
     public GameObject healthText;
     public float finalHealth = 20f;
-    public GameObject sceneManager;
 
-    
+    private GameManager gameManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameManager = GameManager.Instance;
+
         updateHealth(42f);
     }
 
@@ -30,6 +31,11 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
+        {
+            return;
+        }
+
         //check if the groundchecker is touching or not
         if (grounded == true)
         {
@@ -47,6 +53,10 @@ public class playerController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
+        {
+            return;
+        }
 
         //rotating based on mouse position
         //rb.rotation =  Quaternion.Euler(-Input.mousePosition.y , Input.mousePosition.x, 0);
@@ -74,6 +84,11 @@ public class playerController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
+        {
+            return;
+        }
+
         if(other.CompareTag("interactArea"))
         {
             Debug.Log("in interact area");
@@ -85,8 +100,13 @@ public class playerController : MonoBehaviour
         }
         }
     }
-        public void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
+        {
+            return;
+        }
+
         if(other.CompareTag("interactArea"))
         {
             //Debug.Log("in interact area");
@@ -107,7 +127,7 @@ public class playerController : MonoBehaviour
     {
         if(0 >= finalHealth)
         {
-            sceneManager.GetComponent<sceneManager>().gameOver();
+            gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
         }
         else{
             finalHealth = finalHealth - Time.deltaTime;
