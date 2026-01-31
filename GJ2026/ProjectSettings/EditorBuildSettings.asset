@@ -17,5 +17,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/scenes/RoadLevel_2.unity
     guid: d5ad698820386764a83fc9aa4dfbc036
+  - enabled: 1
+    path: Assets/scenes/ParkLavel_3.unity
+    guid: d0de9e70c8277594b822425ad192a4e8
+  - enabled: 1
+    path: Assets/scenes/HouseLevel_4.unity
+    guid: 7586f87f10655ab4e9df70db9296cc8e
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
