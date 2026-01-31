@@ -18,4 +18,9 @@ public class maskHolder : MonoBehaviour
             equippedMask.GetComponent<host>().equipped = true;
         }
     }
+
+    public void equipMask(GameObject other)
+    {
+        Debug.Log(other);
+    }
 }

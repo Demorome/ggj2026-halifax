@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+
 
 public class playerController : MonoBehaviour
 {
@@ -9,11 +11,17 @@ public class playerController : MonoBehaviour
     public Rigidbody rb;
 
     private Vector3 jump =  Vector3.zero;
+    public GameObject maskHolder;
+    public Collider collider;
+    public float health = 10f;
+    public GameObject healthText;
+
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        updateHealth(42f);
     }
 
 
@@ -48,7 +56,8 @@ public class playerController : MonoBehaviour
         //on click do a swing
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("swing");
+            //Debug.Log("swing");
+            
         }
         
 
@@ -59,5 +68,37 @@ public class playerController : MonoBehaviour
         Debug.Log("knockback");
         //send them back from where enemy is facing
         rb.AddForce(rotation * Vector3.back * -knockback);
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "interactArea")
+        {
+            Debug.Log("in interact area");
+            if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Debug.Log("interacting");
+            maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
+            
+        }
+        }
+    }
+        public void OnTriggerStay(Collider other)
+    {
+        if(other.tag == "interactArea")
+        {
+            //Debug.Log("in interact area");
+            if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Debug.Log("interacting");
+            maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
+            
+        }
+        }
+    }
+    public void updateHealth(float newHealth)
+    {
+        healthText.GetComponent<TextMeshProUGUI>().text = "Health: " + newHealth;
+
     }
 }
