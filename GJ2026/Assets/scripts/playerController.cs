@@ -72,7 +72,7 @@ public class playerController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "interactArea")
+        if(other.CompareTag("interactArea"))
         {
             Debug.Log("in interact area");
             if (Input.GetKeyDown(KeyCode.Z))
@@ -85,7 +85,7 @@ public class playerController : MonoBehaviour
     }
         public void OnTriggerStay(Collider other)
     {
-        if(other.tag == "interactArea")
+        if(other.CompareTag("interactArea"))
         {
             //Debug.Log("in interact area");
             if (Input.GetKeyDown(KeyCode.Z))
