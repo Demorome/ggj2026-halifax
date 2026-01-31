@@ -17,9 +17,15 @@ public class hostStats : host
     {
         if(equipped == true)
         {
-            timer = timer-Time.deltaTime;
-            playerController.updateHealth(timer);
-           //Debug.Log(timer);
+            if(timer > 0){
+                timer = timer-Time.deltaTime;
+                playerController.updateHealth(timer);
+                //Debug.Log(timer);
+            }
+            else
+            {
+                playerController.loseFinalHealth();
+            }
         }
     }
 }

@@ -13,8 +13,10 @@ public class playerController : MonoBehaviour
     private Vector3 jump =  Vector3.zero;
     public GameObject maskHolder;
     public Collider collider;
-    public float health = 10f;
+    public float health = 42f;
     public GameObject healthText;
+    public float finalHealth = 20f;
+    public GameObject sceneManager;
 
     
 
@@ -98,7 +100,18 @@ public class playerController : MonoBehaviour
     }
     public void updateHealth(float newHealth)
     {
-        healthText.GetComponent<TextMeshProUGUI>().text = "Health: " + newHealth;
+        healthText.GetComponent<TextMeshProUGUI>().text = "Health: " + newHealth + "\n Final Health: " + finalHealth;
 
+    }
+    public void loseFinalHealth()
+    {
+        if(0 >= finalHealth)
+        {
+            sceneManager.GetComponent<sceneManager>().gameOver();
+        }
+        else{
+            finalHealth = finalHealth - Time.deltaTime;
+            updateHealth(0f);
+        }
     }
 }
