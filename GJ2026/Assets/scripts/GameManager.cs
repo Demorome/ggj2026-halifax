@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public enum PlayingState { Normal, Paused, LevelComplete, GameOver }
     public PlayingState CurrentPlayingState { get; private set; }
 
+    public GameObject GameOverScreenPrefab;
+    private GameObject GameOverScreen;
+
     // Global game data
     // TODO: Completed levels? High-scores for each level?
 
@@ -100,8 +103,8 @@ public class GameManager : MonoBehaviour
                 break;
             case PlayingState.GameOver:
                 // Handle leaving the game over screen
-
-                // TODO: Hide/destroy the GameOver screen overlay!
+                Destroy(GameOverScreen);
+                GameOverScreen = null;
                 break;
         }
 
@@ -119,7 +122,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0f; // Stop time
                 break;
             case PlayingState.GameOver:
-                // TODO: Instantiate the GameOver screen overlay!
+                GameOverScreen = Instantiate(GameOverScreenPrefab);
                 break;
         }
 
@@ -128,7 +131,6 @@ public class GameManager : MonoBehaviour
 
     public void ReloadCurrentScene()
     {
-
         //sets scene to the current scene restarting
         SceneManager.SetActiveScene(SceneManager.GetActiveScene());
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  MaxHealthTimer: 10
+  timer: 10
   playerController: {fileID: 1097400044}
 --- !u!1 &477078319
 GameObject:
@@ -1641,7 +1641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  MaxHealthTimer: 10
+  timer: 10
   playerController: {fileID: 1097400044}
 --- !u!1 &1384415943
 GameObject:
@@ -1929,6 +1929,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8698987154163527849, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: GameOverScreenPrefab
+      value: 
+      objectReference: {fileID: 7443788210750990300, guid: 666e394efe7afb6789adf666b042bddc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
