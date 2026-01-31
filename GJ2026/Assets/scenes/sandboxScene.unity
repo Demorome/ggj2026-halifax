@@ -931,7 +931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  timer: 10
+  maxTimer: 0
   mass: 1
   playerController: {fileID: 1097400044}
 --- !u!1 &477078319
@@ -1660,7 +1660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
   equipped: 0
-  timer: 5
+  maxTimer: 5
   mass: 1
   playerController: {fileID: 1097400044}
 --- !u!1 &1384415943
