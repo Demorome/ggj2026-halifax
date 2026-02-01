@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.MainMenu:
                 // Prepare title screen
+                LoadMainMenuScene();
                 break;
             case GameState.Playing:
                 // Prepare for gameplay
@@ -162,10 +163,17 @@ public class GameManager : MonoBehaviour
         CurrentPlayingState = newState;
     }
 
+    private void LoadMainMenuScene()
+    {
+        //sets scene to the current scene restarting
+        IsWaitingForSceneLoad = true;
+        LoadScene(0);
+    }
+
     public void LoadNextScene()
     {
         //sets scene to the current scene restarting
-        IsLoadingTest = true;
+        IsWaitingForSceneLoad = true;
         var currentScene = SceneManager.GetActiveScene();
         var nextID = currentScene.buildIndex + 1;
         LoadScene(nextID);
@@ -175,14 +183,14 @@ public class GameManager : MonoBehaviour
     {
         //sets scene to the current scene restarting
         //SceneManager.SetActiveScene(SceneManager.GetActiveScene());
-        IsLoadingTest = true;
+        IsWaitingForSceneLoad = true;
         var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         LoadScene(currentSceneIndex);
     }
 
     private CancellationTokenSource cts;
-    public bool IsLoading => IsLoadingTest || cts != null;
-    private bool IsLoadingTest;
+    public bool IsLoading => IsWaitingForSceneLoad || cts != null;
+    private bool IsWaitingForSceneLoad;
 
     // Try Catch async task
     // Source: https://gist.github.com/VinayKashyap06/f536f68d769030101d93430b683e695c
@@ -246,7 +254,7 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Scene loaded: " + scene.name);
-        IsLoadingTest = false;
+        IsWaitingForSceneLoad = false;
     }
 
     public void ShowLevelCompleteScreen()
