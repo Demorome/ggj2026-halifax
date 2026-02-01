@@ -1,4 +1,4 @@
-﻿/* 
+﻿/*
     ------------------- Code Monkey -------------------
 
     Thank you for downloading this package
@@ -9,6 +9,8 @@
                unitycodemonkey.com
     --------------------------------------------------
  */
+
+// Modified thanks to https://discussions.unity.com/t/trouble-with-mesh-generation-for-a-field-of-view/910678/6
 
 using System.Collections;
 using System.Collections.Generic;
