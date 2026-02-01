@@ -60,6 +60,7 @@ public class PersistentPlayer : MonoBehaviour
     /// </summary>
     public void TryEquipHost(GameObject enemyToEquip)
     {
+                /*
         enemyToEquip.transform.position = Vector3.zero;
         //other.transform.tag = "area";
         equippedHost.transform.parent.position = Vector3.zero;
@@ -67,6 +68,7 @@ public class PersistentPlayer : MonoBehaviour
         {
             enemyToEquip.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
         }
+
         equippedHost.transform.parent.tag = "interactArea";
         equippedMask.GetComponent<Host>().IsEquipped = false;
         equippedHost.transform.parent.SetParent(GameObject.Find("UnconsciousEnemies").transform);
@@ -74,6 +76,7 @@ public class PersistentPlayer : MonoBehaviour
         equippedMask.GetComponent<Host>().IsEquipped = true;
         equippedHost.transform.parent.SetParent(transform);
         equippedHost.transform.parent.position = Vector3.zero;
+        */
 
         //Debug.Log(other);
         //Debug.Log(equippedHost);

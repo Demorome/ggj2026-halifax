@@ -380,8 +380,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::playerController
   moveSpeed: 10
   rb: {fileID: 146385268}
-  maskHolder: {fileID: 760779837}
   collider: {fileID: 146385267}
+  persistentPlayer: {fileID: 0}
 --- !u!65 &146385267
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1281,7 +1281,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::maskHolder
   MaxMaskHealth: 10
-  equippedMask: {fileID: 2136975648}
+  controllerWhenInRegularForm: {fileID: 0}
+  equippedHost: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
