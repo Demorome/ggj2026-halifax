@@ -330,7 +330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db11dcd8c05dd434182da590019be13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  gameManager: {fileID: 0}
 --- !u!1 &146385264
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,14 +379,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::playerController
   groundCheck: {fileID: 2407434}
-  grounded: 1
   moveSpeed: 10
-  jumpHeight: 100
   rb: {fileID: 146385268}
   maskHolder: {fileID: 760779837}
   collider: {fileID: 146385267}
-  healthText: {fileID: 273541439}
-  finalHealth: 20
 --- !u!65 &146385267
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1207,7 +1202,7 @@ Transform:
   m_GameObject: {fileID: 562506617}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.1, y: -3.36, z: -0.37}
+  m_LocalPosition: {x: 21.1, y: -0.1, z: -0.37}
   m_LocalScale: {x: 1, y: 3, z: 30}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1837,10 +1832,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed6881ff72ee8f4eaf18992ff71b1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
-  equipped: 0
-  timer: 10
-  mass: 1
-  playerController: {fileID: 146385266}
+  <maxHostHealthTimer>k__BackingField: 5
+  <mass>k__BackingField: 1
+  <playerController>k__BackingField: {fileID: 0}
 --- !u!65 &1258812266
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2250,6 +2244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8965bd23cfefb2f4983a61c4c9c988fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  EnemyFieldOfView: {fileID: 0}
   detection: {fileID: 1824539921}
   rb: {fileID: 1969036867}
   player: {fileID: 146385264}
@@ -2405,10 +2400,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed6881ff72ee8f4eaf18992ff71b1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
-  equipped: 0
-  timer: 10
-  mass: 1
-  playerController: {fileID: 146385266}
+  <maxHostHealthTimer>k__BackingField: 5
+  <mass>k__BackingField: 1
+  <playerController>k__BackingField: {fileID: 0}
 --- !u!65 &2136975651
 BoxCollider:
   m_ObjectHideFlags: 0
