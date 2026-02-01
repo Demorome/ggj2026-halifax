@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+
         if (Input.GetKey(KeyCode.E))
         {
             transform.Rotate(0, Time.deltaTime * 250, 0);
