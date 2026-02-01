@@ -2020,6 +2020,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 289914340}
     m_Modifications:
+    - target: {fileID: 2296486140926382624, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2296486140926382624, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4947571009318775213, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
       propertyPath: m_Name
       value: FieldOfView
