@@ -612,7 +612,6 @@ Transform:
   m_Children:
   - {fileID: 1523675694}
   - {fileID: 796416061}
-  - {fileID: 241348768}
   m_Father: {fileID: 477078320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &289914341
@@ -950,6 +949,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 590961525}
+  - {fileID: 241348768}
   m_Father: {fileID: 796416061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &369796715
@@ -1039,13 +1039,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 369796712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed6881ff72ee8f4eaf18992ff71b1b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 8965bd23cfefb2f4983a61c4c9c988fa, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::hostStats
-  equipped: 0
-  maxTimer: 0
-  mass: 1
-  playerController: {fileID: 1097400044}
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyCatController
+  EnemyFieldOfView: {fileID: 241348769}
+  detection: {fileID: 0}
+  rb: {fileID: 0}
+  player: {fileID: 0}
+  playerRB: {fileID: 0}
+  enemySelf: {fileID: 0}
+  collider: {fileID: 0}
 --- !u!1 &477078319
 GameObject:
   m_ObjectHideFlags: 0
@@ -1501,14 +1504,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::playerController
   groundCheck: {fileID: 100301053}
-  grounded: 1
   moveSpeed: 10
-  jumpHeight: 100
   rb: {fileID: 1097400043}
   maskHolder: {fileID: 1847275228}
   collider: {fileID: 1097400042}
-  healthText: {fileID: 1183918396}
-  finalHealth: 5
 --- !u!1 &1183918396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,10 +1771,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed6881ff72ee8f4eaf18992ff71b1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hostStats
-  equipped: 0
-  maxTimer: 5
-  mass: 1
-  playerController: {fileID: 1097400044}
+  <maxHostHealthTimer>k__BackingField: 5
+  <mass>k__BackingField: 1
+  <playerController>k__BackingField: {fileID: 0}
 --- !u!1 &1384415943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2131,7 +2129,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 289914340}
+    m_TransformParent: {fileID: 369796713}
     m_Modifications:
     - target: {fileID: 2296486140926382624, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
       propertyPath: m_CastShadows
@@ -2163,15 +2161,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8105806428085078117, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8105806428085078117, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8105806428085078117, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8105806428085078117, guid: 669af0a03411a82f2800ff3d702e471c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

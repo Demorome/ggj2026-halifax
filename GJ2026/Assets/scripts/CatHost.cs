@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class CatHost : Host
 {
-    public override float maxHostHealthTimer { get; set; }
-    protected override float CurrentHostHealthTimer { get; set; } = 5f;
+    [field: SerializeField] public override float maxHostHealthTimer { get; set; } = 5f;
+    protected override float CurrentHostHealthTimer { get; set; }
 
-    public override float mass { get; set; } = 1f;
-    public override PlayerController playerController { get; set; }
+    [field: SerializeField] public override float mass { get; set; } = 1f;
+    [field: SerializeField] public override PlayerController playerController { get; set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

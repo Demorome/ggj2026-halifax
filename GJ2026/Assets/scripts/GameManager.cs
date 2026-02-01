@@ -49,8 +49,14 @@ public class GameManager : MonoBehaviour
             // Set event handlers
             SceneManager.sceneLoaded += OnSceneLoaded;
 
+            var currentSceneID = SceneManager.GetActiveScene().buildIndex;
+
             // Set initial state
-            CurrentGameState = GameState.MainMenu;
+            if (currentSceneID != 0)
+            {
+                CurrentGameState = GameState.Playing;
+                CurrentPlayingState = PlayingState.Normal;
+            }
 
             healthLabel = UIDoc.rootVisualElement.Q<Label>("HealthLabel");
             if (healthLabel == null)
@@ -89,7 +95,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Tried to change game state while loading");
             return;
         }
-
 
         Debug.Log("Exiting Game state: " +  CurrentGameState);
 
