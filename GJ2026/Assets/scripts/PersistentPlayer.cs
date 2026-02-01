@@ -5,7 +5,9 @@ using UnityEngine.Animations;
 
 /// <summary>
 /// Unlike PlayerController, this stores player info that is persistent,
-/// even after changing between multiple hosts.
+/// even after changing between multiple hosts. <br/>
+///
+/// This is only persistent during a level, and will get reset if the level is reset.
 /// </summary>
 public class PersistentPlayer : MonoBehaviour
 {
