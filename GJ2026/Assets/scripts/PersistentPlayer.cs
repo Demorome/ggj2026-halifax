@@ -23,15 +23,17 @@ public class PersistentPlayer : MonoBehaviour
     /// </summary>
     public PlayerController controllerWhenInRegularForm;
 
-    public (Host, EnemyEntity)? maybeEquippedHostEnemyPair = null;
+    public (GameObject, GameObject)? maybeEquippedHostEnemyPair = null;
     public bool IsHostEquipped => maybeEquippedHostEnemyPair != null;
 
     private GameManager gameManager;
+    public GameObject playerHolder;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         gameManager = GameManager.Instance;
+
         CurrentMaskHealth = MaxMaskHealth;
     }
 
@@ -59,7 +61,14 @@ public class PersistentPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// May not succeed if the player already has a host equipped.
+    /// May not succeed if the player already has a host equipped. <br/>
+    ///
+    /// WARNING: the enemy needs to be part of a "enemyAndHostVersionHolder" object,
+    /// and the Host (player-controlled version) needs to be
+    /// a pre-Disabled child of the enemy.<br/>
+    ///
+    /// The Host object will be automatically moved
+    /// under "playerHolder" -> "player" -> "hostHolder".
     /// </summary>
     public void TryEquipEnemyAsHost(GameObject enemyToEquip)
     {
@@ -75,28 +84,35 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
 
+        // FIXME: Check the enemy's health / life status!
+        // TODO: It might be dead; can't equip it then!!
+
         // FIXME: simplify!
         //enemyToEquip.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
 
-        maybeEquippedHostEnemyPair
+        // Host version will always be a pre-disabled child of the enemy object.
+        var hostVersion = Transform.FindFirstObjectByType<GameObject>();
+        Debug.Log(hostVersion.name);
+        maybeEquippedHostEnemyPair = new(hostVersion, enemyToEquip);
 
-        enemyToEquip.transform.position = Vector3.zero;
-        //other.transform.tag = "area";
-        var enemyParent = enemyToEquip.enemyToEquip
-        equippedHost.transform.parent.position = Vector3.zero;
+        if (!hostVersion.activeInHierarchy)
+        {
+            Debug.LogError("Host version should have been inactive/disabled!");
+            return;
+        }
+        if (enemyToEquip.activeInHierarchy)
+        {
+            Debug.LogError("Enemy should have been active/enabled!");
+            return;
+        }
 
+        // enable the host version
+        hostVersion.SetActive(true);
+        hostVersion.transform.SetParent(playerHolder.transform);
+        hostVersion.transform.position = enemyToEquip.transform.position;
 
-        equippedHost.transform.parent.tag = "interactArea";
-        equippedMask.GetComponent<Host>().IsEquipped = false;
-        //equippedHost = enemyToEquip.transform.GetChild(0).gameObject as Host;
-        equippedMask.GetComponent<Host>().IsEquipped = true;
-        equippedHost.transform.parent.SetParent(transform);
-        equippedHost.transform.parent.position = Vector3.zero;
-
-
-        //Debug.Log(other);
-        //Debug.Log(equippedHost);
-        //Debug.Log(equippedHost.transform.parent.position + " name: " + equippedHost.transform.parent.name);
+        // disable the enemy version
+        enemyToEquip.SetActive(false);
     }
 
     /// <summary>
@@ -110,12 +126,16 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
 
-        // TODO
+        var (host, enemy) = maybeEquippedHostEnemyPair.Value;
 
-        equippedHost.
-        equippedHost.transform.parent.SetParent(
-            GameObject.Find("UnconsciousEnemies").transform
-            );
+        // Re-enable enemy
+        enemy.SetActive(true);
+        // FIXME: Set the enemy unconscious!!
+        // TODO: Change its transform parent back to enemy holder!
+
+
+        // Disable host (player version)
+        host.SetActive(false);
     }
 
     private void CountDownMaskLife()
