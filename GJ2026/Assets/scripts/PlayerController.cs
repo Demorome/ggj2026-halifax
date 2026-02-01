@@ -1,21 +1,19 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
 
-
-public class playerController : MonoBehaviour
+// NOTE: The player may switch from host to host, which may use different PlayerControllers!
+public class PlayerController : MonoBehaviour
 {
- public GameObject groundCheck;
-    public bool grounded = true;
+    public GameObject groundCheck;
+    //public bool grounded = true;
     public float moveSpeed = 10f;
-    public float jumpHeight = 100f;
+    //public float jumpHeight = 100f;
     public Rigidbody rb;
 
     private Vector3 jump =  Vector3.zero;
     public GameObject maskHolder;
     public Collider collider;
-    //public float health = 42f;
-    public GameObject healthText;
-    public float finalHealth = 20f;
 
     private GameManager gameManager;
 
@@ -23,8 +21,6 @@ public class playerController : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.Instance;
-
-        updateHealth(42f);
     }
 
 
@@ -37,7 +33,7 @@ public class playerController : MonoBehaviour
         }
 
         //check if the groundchecker is touching or not
-        if (grounded == true)
+        /*if (grounded == true)
         {
 
             //down means it can only be pressed not held down note to self think about jetpack for holding down
@@ -49,7 +45,7 @@ public class playerController : MonoBehaviour
                 rb.AddForce(transform.up * jumpHeight);
 
             }
-        }
+        }*/
     }
     void FixedUpdate()
     {
@@ -62,7 +58,12 @@ public class playerController : MonoBehaviour
         //rb.rotation =  Quaternion.Euler(-Input.mousePosition.y , Input.mousePosition.x, 0);
 
         //move based on axis input
-        transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed, 0, Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed, Space.Self);
+        transform.Translate(
+            Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed,
+            0,
+            Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed,
+            Space.Self
+            );
 
 
         //on click do a swing
@@ -89,15 +90,15 @@ public class playerController : MonoBehaviour
             return;
         }
 
-        if(other.CompareTag("interactArea"))
+        if (other.CompareTag("interactArea"))
         {
             Debug.Log("in interact area");
             if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Debug.Log("interacting");
-            maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
-            
-        }
+            {
+                Debug.Log("interacting");
+                maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
+
+            }
         }
     }
     public void OnTriggerStay(Collider other)
@@ -111,28 +112,11 @@ public class playerController : MonoBehaviour
         {
             //Debug.Log("in interact area");
             if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Debug.Log("interacting");
-            maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
-            
-        }
-        }
-    }
-    public void updateHealth(float newHealth)
-    {
-        healthText.GetComponent<TextMeshProUGUI>().text = "Health: " + newHealth + "\n Final Health: " + finalHealth;
+            {
+                Debug.Log("interacting");
+                maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
 
-    }
-    public void loseFinalHealth()
-    {
-        if(0 >= finalHealth)
-        {
-            Debug.Log("Lost final health; game over!");
-            gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
-        }
-        else{
-            finalHealth = finalHealth - Time.deltaTime;
-            updateHealth(0f);
+            }
         }
     }
 }

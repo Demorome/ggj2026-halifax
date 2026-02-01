@@ -48,9 +48,11 @@ public class EnemyCatController : EnemyEntity
             return;
         }
 
-        if(other.gameObject.tag == "Player")
+        // FIXME: Place this logic in EnemyEntity!
+        if (other.gameObject.tag == "Player")
         {
-            player.GetComponent<playerController>().finalHealth--;
+            Debug.Log("Player collided with an enemy; game over!");
+            GameManager.Instance.ChangePlayingState(GameManager.PlayingState.GameOver);
         }
     }
     public override void MaskControl()

@@ -18,7 +18,7 @@ public class maskHolder : MonoBehaviour
     {
         if(equippedMask != null)
         {
-            equippedMask.GetComponent<host>().equipped = true;
+            //equippedMask.GetComponent<Host>().IsEquipped = true;
         }
     }
 
@@ -31,12 +31,12 @@ public class maskHolder : MonoBehaviour
             other.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
         }
         equippedMask.transform.parent.tag = "interactArea";
-        equippedMask.GetComponent<host>().equipped = false;
+        //equippedMask.GetComponent<Host>().IsEquipped = false;
         equippedMask.transform.parent.SetParent(GameObject.Find("droppedMasks").transform);
         Debug.Log(other);
         equippedMask = other.transform.GetChild(0).gameObject;
         Debug.Log(equippedMask);
-        equippedMask.GetComponent<host>().equipped = true;
+        //equippedMask.GetComponent<Host>().IsEquipped = true;
         equippedMask.transform.parent.SetParent(transform);
         Debug.Log(equippedMask.transform.parent.position + " name: " + equippedMask.transform.parent.name);
         equippedMask.transform.parent.position = new Vector3(0,0,0);

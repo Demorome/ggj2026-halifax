@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 // Credits to this for the baseline:
 // https://uhiyama-lab.com/en/notes/unity/unity-gameloop-gamemanager-pattern-guide/
@@ -14,16 +15,23 @@ public class GameManager : MonoBehaviour
 
     // Enum defining game states
     public enum GameState { MainMenu, Playing }
-    public GameState CurrentGameState { get; private set; }
 
-    public enum PlayingState { Normal, Paused, LevelComplete, GameOver }
+    public GameState CurrentGameState { get; private set; }
+        = GameState.MainMenu;
+
+    public enum PlayingState { None, Normal, Paused, LevelComplete, GameOver }
+
     public PlayingState CurrentPlayingState { get; private set; }
+        = PlayingState.None;
 
     public GameObject GameOverScreenPrefab;
     private GameObject GameOverScreen;
 
     public GameObject PauseScreenPrefab;
     private GameObject PauseScreen;
+
+    public UIDocument UIDoc;
+    private Label healthLabel;
 
     // Global game data
     // TODO: Completed levels? High-scores for each level?
@@ -43,6 +51,12 @@ public class GameManager : MonoBehaviour
 
             // Set initial state
             CurrentGameState = GameState.MainMenu;
+
+            healthLabel = UIDoc.rootVisualElement.Q<Label>("HealthLabel");
+            if (healthLabel == null)
+            {
+                Debug.LogError("No health label found!");
+            }
         }
         // If instance already exists, destroy this duplicate
         else
@@ -90,7 +104,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 // Prepare for gameplay
-                CurrentPlayingState = PlayingState.Normal;
+                ChangePlayingState(PlayingState.Normal);
 
                 // TODO: Use level selection menu info instead, to load
                 // a specific scene.
@@ -265,4 +279,14 @@ public class GameManager : MonoBehaviour
     // Example calls from other scripts:
     // GameManager.Instance.AddScore(100);
     // GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
+
+
+    // NOTE: Host health is different from the Mask's own health!
+    public void UpdateHostHealthUI(float currentHealth, float maxHealth)
+    {
+        // Credits to https://learn.unity.com/tutorial/make-health-bar-with-UItoolkit
+        float healthRatio = currentHealth / maxHealth;
+        float healthPercent = Mathf.Lerp(8, 88, healthRatio);
+        healthLabel.style.width = Length.Percent(healthPercent);
+    }
 }

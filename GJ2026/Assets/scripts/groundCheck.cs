@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/*
 public class groundCheck : MonoBehaviour
 {
     public GameObject playerBody;
@@ -19,7 +20,7 @@ public class groundCheck : MonoBehaviour
         if (collObj.tag == "environment")
         {
             //Debug.Log("exit: " + collObj);
-            playerBody.GetComponent<playerController>().grounded = false;
+            playerBody.GetComponent<PlayerController>().grounded = false;
         }
     }
     //collObj = colliding object
@@ -29,10 +30,11 @@ public class groundCheck : MonoBehaviour
         {
             //Debug.Log("Enter: " + collObj);
             //Debug.Log(collObj.tag);
-            playerBody.GetComponent<playerController>().grounded = true;
+            playerBody.GetComponent<PlayerController>().grounded = true;
         }
     }
 
     
 }
 
+*/
