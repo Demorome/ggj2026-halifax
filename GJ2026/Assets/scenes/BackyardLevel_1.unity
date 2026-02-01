@@ -182,7 +182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20272953}
   m_Layer: 0
-  m_Name: droppedMasks
+  m_Name: UnconsciousEnemies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,7 +378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b677c52e2d153445a12c850c505a69e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::playerController
-  groundCheck: {fileID: 2407434}
   moveSpeed: 10
   rb: {fileID: 146385268}
   maskHolder: {fileID: 760779837}
@@ -1418,6 +1417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e04d978f2683143bf0f831563a8fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::maskHolder
+  MaxMaskHealth: 10
   equippedMask: {fileID: 2136975648}
 --- !u!1 &832575517
 GameObject:
@@ -1784,6 +1784,79 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1001 &1134033106
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.18
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.84
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
+      propertyPath: m_Name
+      value: MaskModel
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
 --- !u!1 &1258812263
 GameObject:
   m_ObjectHideFlags: 0
@@ -2494,3 +2567,4 @@ SceneRoots:
   - {fileID: 1733608923}
   - {fileID: 424630357}
   - {fileID: 120772940}
+  - {fileID: 1134033106}
