@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
                 CurrentPlayingState = PlayingState.Normal;
             }
 
-            healthLabel = UIDoc.rootVisualElement.Q<Label>("HealthLabel");
+            healthLabel = UIDoc.rootVisualElement.Q<Label>("HealthBarMask");
             if (healthLabel == null)
             {
                 Debug.LogError("No health label found!");
