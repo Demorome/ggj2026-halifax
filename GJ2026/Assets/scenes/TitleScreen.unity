@@ -334,6 +334,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &809526554 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8963169251722788064, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+  m_PrefabInstance: {fileID: 9146553428980903493}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
 --- !u!1 &928596095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,11 +1140,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669311315}
   m_CullTransparentMesh: 1
---- !u!4 &1669944498 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
-  m_PrefabInstance: {fileID: 9146553428980903493}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1814935629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,61 +1443,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1905277109
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1905277111}
-  - component: {fileID: 1905277110}
-  m_Layer: 5
-  m_Name: GameUIDocument
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1905277110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1905277109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 3b61bf989c6a411cf983e5fc7817f0c2, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: b80bec75a363cd8779d7fda2a81776f9, type: 3}
-  m_SortingOrder: 0
-  m_Position: 0
-  m_WorldSpaceSizeMode: 1
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
-  m_PivotReferenceSize: 0
-  m_Pivot: 0
-  m_WorldSpaceCollider: {fileID: 0}
---- !u!4 &1905277111
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1905277109}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1669944498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1943113485
 GameObject:
@@ -1818,17 +1769,18 @@ PrefabInstance:
     - target: {fileID: 8698987154163527849, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
       propertyPath: UIDoc
       value: 
-      objectReference: {fileID: 1905277110}
+      objectReference: {fileID: 809526554}
     - target: {fileID: 8698987154163527849, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
       propertyPath: GameOverScreenPrefab
       value: 
       objectReference: {fileID: 7443788210750990300, guid: 666e394efe7afb6789adf666b042bddc, type: 3}
+    - target: {fileID: 8963169251722788064, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3762951792663190515, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1905277111}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 687c86e1c81a6e9c29e9d7b3839ecea3, type: 3}
 --- !u!1660057539 &9223372036854775807
