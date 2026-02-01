@@ -15,9 +15,14 @@ public class PersistentPlayer : MonoBehaviour
     public float MaxMaskHealth = 10f;
     private float CurrentMaskHealth;
 
-    //int maskID = 1;
-    public GameObject equippedMask;
-    public bool IsMaskEquipped => equippedMask != null;
+    /// <summary>
+    /// Will be disabled when the player enters a host,
+    /// and re-enabled when leaving the host.
+    /// </summary>
+    public PlayerController controllerWhenInRegularForm;
+
+    public Host equippedHost;
+    public bool IsHostEquipped => equippedHost != null;
 
     private GameManager gameManager;
 
@@ -36,12 +41,10 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
 
-        // TODO: Count down MaskHealth when no masks are equipped.
-
-        if (equippedMask != null)
+        if (equippedHost != null)
         {
             // A mask is equipped.
-            //equippedMask.GetComponent<Host>().IsEquipped = true;
+            //
         }
         else
         {
@@ -54,21 +57,21 @@ public class PersistentPlayer : MonoBehaviour
     {
         other.transform.position = new Vector3(0,0,0);
         other.transform.tag = "area";
-        equippedMask.transform.parent.position = new Vector3(0,0,0);
+        equippedHost.transform.parent.position = new Vector3(0,0,0);
         if(other.transform.parent.gameObject.tag == "enemy"){
             other.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
         }
-        equippedMask.transform.parent.tag = "interactArea";
+        equippedHost.transform.parent.tag = "interactArea";
         //equippedMask.GetComponent<Host>().IsEquipped = false;
-        equippedMask.transform.parent.SetParent(GameObject.Find("droppedMasks").transform);
+        equippedHost.transform.parent.SetParent(GameObject.Find("droppedMasks").transform);
         Debug.Log(other);
-        equippedMask = other.transform.GetChild(0).gameObject;
-        Debug.Log(equippedMask);
+        equippedHost = other.transform.GetChild(0).gameObject;
+        Debug.Log(equippedHost);
         //equippedMask.GetComponent<Host>().IsEquipped = true;
-        equippedMask.transform.parent.SetParent(transform);
-        Debug.Log(equippedMask.transform.parent.position + " name: " + equippedMask.transform.parent.name);
-        equippedMask.transform.parent.position = new Vector3(0,0,0);
-        Debug.Log(equippedMask.transform.parent.position + " name: " + equippedMask.transform.parent.name);
+        equippedHost.transform.parent.SetParent(transform);
+        Debug.Log(equippedHost.transform.parent.position + " name: " + equippedHost.transform.parent.name);
+        equippedHost.transform.parent.position = new Vector3(0,0,0);
+        Debug.Log(equippedHost.transform.parent.position + " name: " + equippedHost.transform.parent.name);
     }
 
     private void CountDownMaskLife()

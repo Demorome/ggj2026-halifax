@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 120772937}
   - component: {fileID: 120772941}
   m_Layer: 0
-  m_Name: END
+  m_Name: END_LEVEL_TRIGGER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -552,7 +552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 170723311}
   m_Layer: 0
-  m_Name: environmentMaskHolder
+  m_Name: enemyAndMaskVersionsHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

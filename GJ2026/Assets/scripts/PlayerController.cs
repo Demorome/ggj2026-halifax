@@ -10,10 +10,13 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10f;
     public Rigidbody rb;
 
-    public GameObject maskHolder;
+    public enum HostType { None_RegularMask, Mouse, Cat, Human, Deer };
+    public HostType hostType;
+
     public Collider collider;
 
     private GameManager gameManager;
+    private PersistentPlayer persistentPlayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
