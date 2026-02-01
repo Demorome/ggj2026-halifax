@@ -21,7 +21,7 @@ public class CatHost : Host
         var gameManager = GameManager.Instance;
         if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal
             || gameManager.IsLoading
-            || IsEquipped)
+            || !IsEquipped)
         {
             return;
         }
