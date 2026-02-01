@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     private GameObject PauseScreen;
 
     public UIDocument UIDoc;
-    private Label healthLabel;
+    private VisualElement healthUI;
 
     // Global game data
     // TODO: Completed levels? High-scores for each level?
@@ -58,8 +58,8 @@ public class GameManager : MonoBehaviour
                 CurrentPlayingState = PlayingState.Normal;
             }
 
-            healthLabel = UIDoc.rootVisualElement.Q<Label>("HealthBarMask");
-            if (healthLabel == null)
+            healthUI = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
+            if (healthUI == null)
             {
                 Debug.LogError("No health label found!");
             }
@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour
         // Credits to https://learn.unity.com/tutorial/make-health-bar-with-UItoolkit
         float healthRatio = currentHealth / maxHealth;
         float healthPercent = Mathf.Lerp(8, 88, healthRatio);
-        healthLabel.style.width = Length.Percent(healthPercent);
-        //Debug.Log("HostHealth UI width: " + healthLabel.style.width);
+        healthUI.style.width = Length.Percent(healthPercent);
+        Debug.Log("HostHealth UI width: " + healthUI.style.width);
     }
 }
