@@ -33,21 +33,6 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-
-        //check if the groundchecker is touching or not
-        /*if (grounded == true)
-        {
-
-            //down means it can only be pressed not held down note to self think about jetpack for holding down
-            if (Input.GetKeyDown("space"))
-            {
-                Debug.Log("jump");
-                //adding force up
-                jump.y = jumpHeight * Time.deltaTime * 1000;
-                rb.AddForce(transform.up * jumpHeight);
-
-            }
-        }*/
     }
     void FixedUpdate()
     {
@@ -74,10 +59,9 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("swing");
             
         }
-        
-
     }
-    //knock back method for if hit
+
+    // Knock back method for if hit
     public void knockback(Quaternion rotation, float knockback)
     {
         Debug.Log("knockback");
