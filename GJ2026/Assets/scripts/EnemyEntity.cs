@@ -5,14 +5,14 @@ public abstract class EnemyEntity : MonoBehaviour
     public bool IsAlerted { get; private set; } = false;
     public EnemyFieldOfView EnemyFieldOfView;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // WARNING: You'll need to call this from the inherited class!
+    protected void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    // WARNING: You'll need to call this from the inherited class!
+    protected void Update()
     {
         var gameManager = GameManager.Instance;
         if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal

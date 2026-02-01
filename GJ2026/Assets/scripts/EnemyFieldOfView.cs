@@ -31,46 +31,74 @@ public class EnemyFieldOfView : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
+    private void Update()
+    {
+        MeshGenQuarternionCalcs();
+    }
+
     private void LateUpdate() {
-        float angle = 0; //startingAngle; // FIXME!
-        float angleIncrease = fov / rayCount;
 
-        Vector3[] vertices = new Vector3[rayCount + 1 + 1];
-        Vector2[] uv = new Vector2[vertices.Length];
-        int[] triangles = new int[rayCount * 3];
+    }
 
-        Vector3 origin = transform.position;
-        vertices[0] = origin;
+    private float AimDirectionStartingAngle
+    {
+        get
+        {
+            return UtilsClass.GetAngleFromVectorFloat(transform.rotation.eulerAngles)
+                   - (fov / 2);
+        }
+    }
+
+    // Credits to https://discussions.unity.com/t/trouble-with-mesh-generation-for-a-field-of-view/910678/6
+    public void MeshGenQuarternionCalcs()
+    {
+        int raycount = rayCount;
+        float meshAngle = AimDirectionStartingAngle + fov/2;
+        float angleIncrease = fov / raycount;
+
+        Vector3[] vertices = new Vector3[raycount + 1 + 1]; // positioning of points
+        Vector2[] uv = new Vector2[vertices.Length]; // texture rendered - vector 2 as the image it references is flat 2d so it uses vector 2 only
+        int[] triangles = new int[raycount * 3]; // actual points of the mesh
+
+        Vector3 rayOrigin = transform.position;
+        vertices[0] = Vector3.zero; // same as above, mesh origin is at this transform's position
 
         HashSet<GameObject> hitObjects = new();
 
-        int vertexIndex = 1;
+        int vertexIndex = 1; // 0 is the origin
         int triangleIndex = 0;
-        for (int i = 0; i <= rayCount; i++) {
+        for (int i = 0; i <= raycount; i++)
+        {
             Vector3 vertex;
-            var vectorFromAngle = UtilsClass.GetVectorFromAngle(angle);
-            bool hit = Physics.Raycast(
-                origin,
-                vectorFromAngle,
-                out RaycastHit hitInfo,
-                viewDistance,
-                layerMask);
+            if (Physics.Raycast(
+                    transform.position,
+                    PointCalcWorldSpace(meshAngle),
+                    out RaycastHit raycastHit,
+                    viewDistance,
+                    layerMask)
+                )
+            {
+                // Hit!
+                Transform mainBodyTransform = transform;
+                vertex = mainBodyTransform.InverseTransformPoint(raycastHit.point);
 
-            if (!hit || hitInfo.collider == null) {
-                // No hit
-                vertex = origin + vectorFromAngle * viewDistance;
-                Debug.DrawRay(origin, vectorFromAngle * viewDistance, Color.red);
-            } else {
-                // Hit object
-                vertex = hitInfo.point;
-                Debug.DrawRay(origin, vectorFromAngle * hitInfo.distance, Color.red);
+                hitObjects.Add(raycastHit.transform.gameObject);
 
-                var hitObject = hitInfo.transform.gameObject;
-                hitObjects.Add(hitObject);
+                //Debug.DrawRay(rayOrigin, PointCalcWorldSpace(meshAngle) * raycastHit.distance, Color.red);
             }
+            else
+            {
+                // Miss!
+                vertex = Vector3.zero + PointCalc(meshAngle);
+
+                //Debug.DrawRay(rayOrigin, PointCalcWorldSpace(meshAngle) * viewDistance, Color.red);
+            }
+
             vertices[vertexIndex] = vertex;
 
-            if (i > 0) {
+
+            if (i > 0)
+            {
                 triangles[triangleIndex + 0] = 0;
                 triangles[triangleIndex + 1] = vertexIndex - 1;
                 triangles[triangleIndex + 2] = vertexIndex;
@@ -79,22 +107,35 @@ public class EnemyFieldOfView : MonoBehaviour
             }
 
             vertexIndex++;
-            angle -= angleIncrease;
+            meshAngle -= angleIncrease; // goes counter clockwise if +, - for anti clockwise
         }
 
         mesh.vertices = vertices;
         mesh.uv = uv;
         mesh.triangles = triangles;
-        mesh.bounds = new Bounds(origin, Vector3.one * 1000f);
+        //mesh.bounds = new Bounds(rayOrigin, Vector3.one * 1000f);
 
         foreach (var hitObject in hitObjects)
         {
             if (hitObject.tag == "Player")
             {
-                Debug.Log("Player was spotted by an enemy!");
                 HasSeenPlayer = true;
                 break;
             }
         }
+    }
+    Vector3 PointCalc(float angle)
+    {
+        Quaternion pointRot = transform.rotation * Quaternion.AngleAxis(angle, -Vector3.up);
+        Vector3 point = pointRot * Vector3.forward * viewDistance;
+        return point;
+    }
+
+    Vector3 PointCalcWorldSpace(float angle)
+    {
+        Quaternion pointRot = transform.rotation * Quaternion.AngleAxis(angle, -Vector3.up);
+        Vector3 point = pointRot * Vector3.forward * viewDistance;
+        Vector3 vectorInWorldSpace = transform.TransformDirection(point);
+        return vectorInWorldSpace;
     }
 }
