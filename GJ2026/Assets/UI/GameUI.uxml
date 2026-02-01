@@ -1,7 +1,10 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="HealthBarBackground" picking-mode="Ignore" style="flex-grow: 1; position: absolute; width: 500px; height: 150px; background-image: url(&quot;project://database/Assets/Sprites/HealthbarBackground.png?fileID=2800000&amp;guid=4dd613d937934bf4c8bc7282e11a41f2&amp;type=3#HealthbarBackground&quot;);">
-        <ui:VisualElement name="HealthBarMask" picking-mode="Ignore" style="flex-grow: 1; position: absolute; width: 88%; height: 100%; overflow: hidden;">
-            <ui:VisualElement name="HealthBarFill" picking-mode="Ignore" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprites/HealthBarFill.png?fileID=2800000&amp;guid=17df3bc68caea7241bd565f1ec3f2bff&amp;type=3#HealthBarFill&quot;); position: absolute; width: 500px; height: 100%;"/>
+        <ui:VisualElement name="FinalHealthBarMask" picking-mode="Ignore" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; overflow: hidden;">
+            <ui:VisualElement name="HealthBarFillBlue" picking-mode="Ignore" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprites/HealthBarFill.png?fileID=2800000&amp;guid=17df3bc68caea7241bd565f1ec3f2bff&amp;type=3#HealthBarFill&quot;); position: absolute; width: 500px; height: 100%; display: flex; -unity-background-image-tint-color: rgb(155, 0, 255);"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="HealthBarMask" picking-mode="Ignore" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; overflow: hidden; display: flex;">
+            <ui:VisualElement name="HealthBarFill" picking-mode="Ignore" enabled="true" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprites/HealthBarFill.png?fileID=2800000&amp;guid=17df3bc68caea7241bd565f1ec3f2bff&amp;type=3#HealthBarFill&quot;); position: absolute; width: 500px; height: 100%; display: flex;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

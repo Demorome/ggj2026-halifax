@@ -35,6 +35,12 @@ public class PersistentPlayer : MonoBehaviour
         gameManager = GameManager.Instance;
 
         CurrentMaskHealth = MaxMaskHealth;
+
+        if (!IsHostEquipped)
+        {
+            Debug.Log("Player spawned without a host equipped");
+            gameManager.UpdateHostHealthUI(0, 100);
+        }
     }
 
     // Update is called once per frame.
@@ -145,10 +151,12 @@ public class PersistentPlayer : MonoBehaviour
         {
             Debug.Log("Lost final health; game over!");
             gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
+            gameManager.UpdateMaskPlayerHealthUI(0, MaxMaskHealth);
         }
         else
         {
             CurrentMaskHealth -= Time.deltaTime;
+            gameManager.UpdateMaskPlayerHealthUI(CurrentMaskHealth, MaxMaskHealth);
         }
     }
 }
