@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Scene loaded");
+        Debug.Log("Scene loaded: " + scene.name);
         IsLoadingTest = false;
     }
 
