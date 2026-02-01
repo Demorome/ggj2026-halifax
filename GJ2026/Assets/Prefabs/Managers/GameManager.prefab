@@ -95,7 +95,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 3b61bf989c6a411cf983e5fc7817f0c2, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: b80bec75a363cd8779d7fda2a81776f9, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
