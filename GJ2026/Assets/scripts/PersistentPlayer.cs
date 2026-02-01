@@ -151,10 +151,12 @@ public class PersistentPlayer : MonoBehaviour
         {
             Debug.Log("Lost final health; game over!");
             gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
+            gameManager.UpdateMaskPlayerHealthUI(0, MaxMaskHealth);
         }
         else
         {
             CurrentMaskHealth -= Time.deltaTime;
+            gameManager.UpdateMaskPlayerHealthUI(CurrentMaskHealth, MaxMaskHealth);
         }
     }
 }
