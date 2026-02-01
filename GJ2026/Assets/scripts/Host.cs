@@ -26,7 +26,7 @@ public abstract class Host : MonoBehaviour
     {
         if (CurrentHostHealthTimer > 0)
         {
-            //Debug.Log(transform.name);
+            //Debug.Log(transform.name + "is losing life: " + CurrentHostHealthTimer);
             CurrentHostHealthTimer -= Time.deltaTime;
             GameManager.Instance.UpdateHostHealthUI(CurrentHostHealthTimer, maxHostHealthTimer);
         }
