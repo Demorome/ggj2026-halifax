@@ -24,6 +24,7 @@ public class EnemyFieldOfView : MonoBehaviour
     private Mesh mesh;
     public float fov = 90f;
     public float viewDistance = 50f;
+    public int rayCount = 50;
 
     private void Start() {
         mesh = new Mesh();
@@ -31,7 +32,6 @@ public class EnemyFieldOfView : MonoBehaviour
     }
 
     private void LateUpdate() {
-        int rayCount = 50;
         float angle = 0; //startingAngle; // FIXME!
         float angleIncrease = fov / rayCount;
 
