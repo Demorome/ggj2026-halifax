@@ -3,22 +3,57 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class maskHolder : MonoBehaviour
+/// <summary>
+/// Unlike PlayerController, this stores player info that is persistent,
+/// even after changing between multiple hosts.
+/// </summary>
+public class PersistentPlayer : MonoBehaviour
 {
-    int mask = 1;
+    /// <summary>
+    /// The player's final health reserves when outside of a host.
+    /// </summary>
+    public float MaxMaskHealth = 10f;
+    private float CurrentMaskHealth;
+
+    //int maskID = 1;
     public GameObject equippedMask;
+
+    private GameManager gameManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        gameManager = GameManager.Instance;
+        CurrentMaskHealth = MaxMaskHealth;
     }
 
-    // Update is called once per frame
+    public void CountDownMaskLife()
+    {
+        if (0 >= CurrentMaskHealth)
+        {
+            Debug.Log("Lost final health; game over!");
+            gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
+        }
+        else
+        {
+            CurrentMaskHealth -= Time.deltaTime;
+        }
+    }
+
+
+    // Update is called once per frame.
     void Update()
     {
-        if(equippedMask != null)
+        // TODO: Count down MaskHealth when no masks are equipped.
+
+        if (equippedMask != null)
         {
+            // A mask is equipped.
             //equippedMask.GetComponent<Host>().IsEquipped = true;
+        }
+        else
+        {
+            // No mask is equipped.
         }
     }
 

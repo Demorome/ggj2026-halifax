@@ -2,7 +2,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UIElements;
 
-// NOTE: The player may switch from host to host, which may use different PlayerControllers!
+/// <summary>
+/// NOTE: The player may switch from host to host, which may use different PlayerControllers!
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     public GameObject groundCheck;
@@ -96,7 +98,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 Debug.Log("interacting");
-                maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
+                maskHolder.GetComponent<PersistentPlayer>().equipMask(other.gameObject);
 
             }
         }
@@ -114,7 +116,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 Debug.Log("interacting");
-                maskHolder.GetComponent<maskHolder>().equipMask(other.gameObject);
+                maskHolder.GetComponent<PersistentPlayer>().equipMask(other.gameObject);
 
             }
         }
