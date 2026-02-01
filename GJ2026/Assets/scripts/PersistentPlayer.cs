@@ -69,9 +69,6 @@ public class PersistentPlayer : MonoBehaviour
         Debug.Log(equippedMask.transform.parent.position + " name: " + equippedMask.transform.parent.name);
         equippedMask.transform.parent.position = new Vector3(0,0,0);
         Debug.Log(equippedMask.transform.parent.position + " name: " + equippedMask.transform.parent.name);
-
-
-
     }
 
     private void CountDownMaskLife()

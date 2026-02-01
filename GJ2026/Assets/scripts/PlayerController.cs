@@ -85,24 +85,6 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(rotation * Vector3.back * -knockback);
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
-        {
-            return;
-        }
-
-        if (other.CompareTag("interactArea"))
-        {
-            Debug.Log("in interact area");
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                Debug.Log("interacting");
-                maskHolder.GetComponent<PersistentPlayer>().equipMask(other.gameObject);
-
-            }
-        }
-    }
     public void OnTriggerStay(Collider other)
     {
         if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
@@ -110,7 +92,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if(other.CompareTag("interactArea"))
+        if (other.CompareTag("interactArea"))
         {
             //Debug.Log("in interact area");
             if (Input.GetKeyDown(KeyCode.Z))
