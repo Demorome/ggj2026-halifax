@@ -293,5 +293,6 @@ public class GameManager : MonoBehaviour
         float healthRatio = currentHealth / maxHealth;
         float healthPercent = Mathf.Lerp(8, 88, healthRatio);
         healthLabel.style.width = Length.Percent(healthPercent);
+        //Debug.Log("HostHealth UI width: " + healthLabel.style.width);
     }
 }

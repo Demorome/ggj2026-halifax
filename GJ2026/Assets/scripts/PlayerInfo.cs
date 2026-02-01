@@ -38,7 +38,6 @@ public class PlayerInfo : MonoBehaviour
         else
         {
             CurrentMaskHealth -= Time.deltaTime;
-            gameManager.UpdateHostHealthUI(CurrentMaskHealth, MaxMaskHealth);
         }
     }
 }
