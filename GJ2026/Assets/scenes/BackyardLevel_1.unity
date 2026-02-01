@@ -364,7 +364,6 @@ Transform:
   m_Children:
   - {fileID: 1201956677}
   - {fileID: 300367530}
-  - {fileID: 1100981140}
   m_Father: {fileID: 1931718317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &146385267
@@ -1574,7 +1573,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 146385265}
+  m_Father: {fileID: 1201956677}
   m_LocalEulerAnglesHint: {x: 63.177, y: 0, z: 0}
 --- !u!81 &1100981141
 AudioListener:
@@ -1738,6 +1737,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1100981140}
   - {fileID: 834894841}
   m_Father: {fileID: 146385265}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
