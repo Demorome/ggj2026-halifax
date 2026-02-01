@@ -1,3 +1,7 @@
+using System;
+using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,6 +37,12 @@ public class GameManager : MonoBehaviour
             Instance = this;
             // Persist this object across scene loads
             DontDestroyOnLoad(gameObject);
+
+            // Set event handlers
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
+            // Set initial state
+            CurrentGameState = GameState.MainMenu;
         }
         // If instance already exists, destroy this duplicate
         else
@@ -40,9 +50,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        // Set initial state
-        CurrentGameState = GameState.MainMenu;
     }
 
     // Method to add score (callable from anywhere)
@@ -58,7 +65,17 @@ public class GameManager : MonoBehaviour
     // Method to change game state
     public void ChangeGameState(GameState newState)
     {
-        if (CurrentGameState == newState) return;
+        if (CurrentGameState == newState || IsLoading)
+        {
+            return;
+        }
+
+        if (IsLoading)
+        {
+            Debug.Log("Tried to change game state while loading");
+            return;
+        }
+
 
         Debug.Log("Exiting Game state: " +  CurrentGameState);
 
@@ -86,7 +103,16 @@ public class GameManager : MonoBehaviour
 
     public void ChangePlayingState(PlayingState newState)
     {
-        if (CurrentPlayingState == newState) return;
+        if (CurrentPlayingState == newState)
+        {
+            return;
+        }
+
+        if (IsLoading)
+        {
+            Debug.Log("Tried to change playing state while loading");
+            return;
+        }
 
         Debug.Log("Exiting Playing state: " +  CurrentPlayingState);
 
@@ -139,17 +165,88 @@ public class GameManager : MonoBehaviour
     public void LoadNextScene()
     {
         //sets scene to the current scene restarting
+        IsLoadingTest = true;
         var currentScene = SceneManager.GetActiveScene();
         var nextID = currentScene.buildIndex + 1;
-
-        SceneManager.LoadScene(nextID);
+        LoadScene(nextID);
     }
 
     public void ReloadCurrentScene()
     {
         //sets scene to the current scene restarting
         //SceneManager.SetActiveScene(SceneManager.GetActiveScene());
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        IsLoadingTest = true;
+        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        LoadScene(currentSceneIndex);
+    }
+
+    private CancellationTokenSource cts;
+    public bool IsLoading => IsLoadingTest || cts != null;
+    private bool IsLoadingTest;
+
+    // Try Catch async task
+    // Source: https://gist.github.com/VinayKashyap06/f536f68d769030101d93430b683e695c
+    private async void LoadScene(int sceneIndex)
+    {
+        if (cts == null)
+        {
+            cts = new CancellationTokenSource();
+            try
+            {
+                await PerformSceneLoading(cts.Token, sceneIndex);
+            }
+            catch (OperationCanceledException ex)
+            {
+                if (ex.CancellationToken == cts.Token)
+                {
+                    // Perform operation after cancelling
+                    Debug.Log("LoadScene: Task cancelled!");
+                }
+            }
+            finally
+            {
+                cts.Cancel();
+                cts = null;
+            }
+        }
+        else
+        {
+            // Cancel Previous token
+            cts.Cancel();
+            cts = null;
+        }
+    }
+
+    // Actual Scene loading
+    private async Task PerformSceneLoading(CancellationToken token, int sceneID)
+    {
+        token.ThrowIfCancellationRequested();
+        if (token.IsCancellationRequested)
+            return;
+
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneID);
+        asyncOperation.allowSceneActivation = false;
+        while (true)
+        {
+            token.ThrowIfCancellationRequested();
+            if (token.IsCancellationRequested)
+                return;
+            if (asyncOperation.progress >= 0.9f)
+                break;
+        }
+        asyncOperation.allowSceneActivation = true;
+        cts.Cancel();
+        token.ThrowIfCancellationRequested();
+
+        //added this as a failsafe unnecessary
+        if (token.IsCancellationRequested)
+            return;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Scene loaded");
+        IsLoadingTest = false;
     }
 
     public void ShowLevelCompleteScreen()

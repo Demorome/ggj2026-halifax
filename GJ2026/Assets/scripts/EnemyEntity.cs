@@ -14,8 +14,16 @@ public abstract class EnemyEntity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var gameManager = GameManager.Instance;
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal
+            || gameManager.IsLoading)
+        {
+            return;
+        }
+
         if (EnemyFieldOfView.HasSeenPlayer)
         {
+            Debug.Log("Player has been seen, game over!");
             GameManager.Instance.ChangePlayingState(GameManager.PlayingState.GameOver);
         }
     }

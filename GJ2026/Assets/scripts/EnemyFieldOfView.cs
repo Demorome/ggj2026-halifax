@@ -18,7 +18,7 @@ using CodeMonkey.Utils;
 public class EnemyFieldOfView : MonoBehaviour
 {
     // True if the enemy found the player.
-    public bool HasSeenPlayer { get; private set; } = false;
+    public bool HasSeenPlayer { get; private set; }
 
     [SerializeField] private LayerMask layerMask;
     private Mesh mesh;

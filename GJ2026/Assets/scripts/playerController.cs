@@ -127,6 +127,7 @@ public class playerController : MonoBehaviour
     {
         if(0 >= finalHealth)
         {
+            Debug.Log("Lost final health; game over!");
             gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
         }
         else{

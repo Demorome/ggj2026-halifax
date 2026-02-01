@@ -4,7 +4,7 @@ using UnityEngine;
 public class CatHostStats : host
 {
     public float maxTimer;
-    private float CurrentTimer;
+    private float CurrentTimer = 5f;
 
     public float mass = 1f;
     public playerController playerController;
@@ -17,10 +17,17 @@ public class CatHostStats : host
     // Update is called once per frame
     void Update()
     {
-        
-        if(equipped == true)
+        var gameManager = GameManager.Instance;
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal
+            || gameManager.IsLoading)
         {
-            if(CurrentTimer > 0){
+            return;
+        }
+        
+        if (equipped == true)
+        {
+            if (CurrentTimer > 0)
+            {
                 //Debug.Log(transform.name);
                 CurrentTimer -= Time.deltaTime;
                 playerController.updateHealth(CurrentTimer);

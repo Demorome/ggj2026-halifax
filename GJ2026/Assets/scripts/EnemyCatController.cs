@@ -17,6 +17,13 @@ public class EnemyCatController : EnemyEntity
     // Update is called once per frame
     void Update()
     {
+        var gameManager = GameManager.Instance;
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal
+            || gameManager.IsLoading)
+        {
+            return;
+        }
+
         if (detection.GetComponent<enemyDetectionEventHandler>().seek == true)
         {
             Debug.Log("seeking");
@@ -32,6 +39,13 @@ public class EnemyCatController : EnemyEntity
 
     void OnCollisionEnter(Collision other)
     {
+        var gameManager = GameManager.Instance;
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal
+            || gameManager.IsLoading)
+        {
+            return;
+        }
+
         if(other.gameObject.tag == "Player")
         {
             player.GetComponent<playerController>().finalHealth--;
