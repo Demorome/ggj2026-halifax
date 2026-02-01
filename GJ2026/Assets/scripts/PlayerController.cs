@@ -7,13 +7,9 @@ using UnityEngine.UIElements;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    public GameObject groundCheck;
-    //public bool grounded = true;
     public float moveSpeed = 10f;
-    //public float jumpHeight = 100f;
     public Rigidbody rb;
 
-    private Vector3 jump =  Vector3.zero;
     public GameObject maskHolder;
     public Collider collider;
 
