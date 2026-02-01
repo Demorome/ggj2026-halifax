@@ -70,7 +70,7 @@ public class PersistentPlayer : MonoBehaviour
         equippedHost.transform.parent.tag = "interactArea";
         equippedMask.GetComponent<Host>().IsEquipped = false;
         equippedHost.transform.parent.SetParent(GameObject.Find("UnconsciousEnemies").transform);
-        equippedHost = enemyToEquip.transform.GetChild(0).gameObject;
+        //equippedHost = enemyToEquip.transform.GetChild(0).gameObject as Host;
         equippedMask.GetComponent<Host>().IsEquipped = true;
         equippedHost.transform.parent.SetParent(transform);
         equippedHost.transform.parent.position = Vector3.zero;

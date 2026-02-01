@@ -11,16 +11,15 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10f;
     public Rigidbody rb;
     public Collider collider;
+    public PersistentPlayer persistentPlayer;
 
     private GameManager gameManager;
-    public PersistentPlayer persistentPlayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         gameManager = GameManager.Instance;
     }
-
 
     // Update is called once per frame
     void Update()
