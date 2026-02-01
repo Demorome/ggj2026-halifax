@@ -23,8 +23,8 @@ public class PersistentPlayer : MonoBehaviour
     /// </summary>
     public PlayerController controllerWhenInRegularForm;
 
-    public Host equippedHost;
-    public bool IsHostEquipped => equippedHost != null;
+    public (Host, EnemyEntity)? maybeEquippedHostEnemyPair = null;
+    public bool IsHostEquipped => maybeEquippedHostEnemyPair != null;
 
     private GameManager gameManager;
 
@@ -43,11 +43,10 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
 
-        if (equippedHost != null)
+        if (IsHostEquipped)
         {
-            // A mask is equipped.
-            // Specific PlayerControllers will do mask-specific logic.
-
+            // Specific PlayerControllers will do host-specific logic,
+            // so we just do generic host logic here.
             if (Input.GetKeyDown(KeyCode.X))
             {
                 TryUnequipHost();
@@ -55,7 +54,6 @@ public class PersistentPlayer : MonoBehaviour
         }
         else
         {
-            // No mask is equipped.
             CountDownMaskLife();
         }
     }
@@ -63,7 +61,7 @@ public class PersistentPlayer : MonoBehaviour
     /// <summary>
     /// May not succeed if the player already has a host equipped.
     /// </summary>
-    public void TryEquipHost(GameObject enemyToEquip)
+    public void TryEquipEnemyAsHost(GameObject enemyToEquip)
     {
         if (IsHostEquipped)
         {
@@ -71,18 +69,25 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
 
+        if (enemyToEquip.tag != "enemy")
+        {
+            Debug.LogError("Can't equip host; target is not an enemy!");
+            return;
+        }
+
+        // FIXME: simplify!
+        //enemyToEquip.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
+
+        maybeEquippedHostEnemyPair
+
         enemyToEquip.transform.position = Vector3.zero;
         //other.transform.tag = "area";
         var enemyParent = enemyToEquip.enemyToEquip
         equippedHost.transform.parent.position = Vector3.zero;
-        if (enemyToEquip.transform.parent.gameObject.tag == "enemy")
-        {
-            enemyToEquip.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
-        }
+
 
         equippedHost.transform.parent.tag = "interactArea";
         equippedMask.GetComponent<Host>().IsEquipped = false;
-        equippedHost.transform.parent.SetParent(GameObject.Find("UnconsciousEnemies").transform);
         //equippedHost = enemyToEquip.transform.GetChild(0).gameObject as Host;
         equippedMask.GetComponent<Host>().IsEquipped = true;
         equippedHost.transform.parent.SetParent(transform);
@@ -99,13 +104,18 @@ public class PersistentPlayer : MonoBehaviour
     /// </summary>
     public void TryUnequipHost()
     {
-        if (IsHostEquipped)
+        if (!IsHostEquipped)
         {
             Debug.Log("Can't unequip host; none is equipped!");
             return;
         }
 
         // TODO
+
+        equippedHost.
+        equippedHost.transform.parent.SetParent(
+            GameObject.Find("UnconsciousEnemies").transform
+            );
     }
 
     private void CountDownMaskLife()

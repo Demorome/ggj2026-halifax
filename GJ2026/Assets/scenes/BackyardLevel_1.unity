@@ -1246,7 +1246,7 @@ GameObject:
   - component: {fileID: 760779838}
   - component: {fileID: 760779839}
   m_Layer: 0
-  m_Name: maskHolder
+  m_Name: hostHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

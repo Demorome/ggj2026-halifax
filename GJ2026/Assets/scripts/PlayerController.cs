@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (other.CompareTag("enemy"))
             {
-                persistentPlayer.TryEquipHost(other.gameObject);
+                persistentPlayer.TryEquipEnemyAsHost(other.gameObject);
             }
         }
     }
