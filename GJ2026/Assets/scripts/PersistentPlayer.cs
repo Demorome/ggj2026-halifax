@@ -17,6 +17,7 @@ public class PersistentPlayer : MonoBehaviour
 
     //int maskID = 1;
     public GameObject equippedMask;
+    public bool IsMaskEquipped => equippedMask != null;
 
     private GameManager gameManager;
 
@@ -27,23 +28,14 @@ public class PersistentPlayer : MonoBehaviour
         CurrentMaskHealth = MaxMaskHealth;
     }
 
-    public void CountDownMaskLife()
-    {
-        if (0 >= CurrentMaskHealth)
-        {
-            Debug.Log("Lost final health; game over!");
-            gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
-        }
-        else
-        {
-            CurrentMaskHealth -= Time.deltaTime;
-        }
-    }
-
-
     // Update is called once per frame.
     void Update()
     {
+        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
+        {
+            return;
+        }
+
         // TODO: Count down MaskHealth when no masks are equipped.
 
         if (equippedMask != null)
@@ -54,6 +46,7 @@ public class PersistentPlayer : MonoBehaviour
         else
         {
             // No mask is equipped.
+            CountDownMaskLife();
         }
     }
 
@@ -79,5 +72,18 @@ public class PersistentPlayer : MonoBehaviour
 
 
 
+    }
+
+    private void CountDownMaskLife()
+    {
+        if (0 >= CurrentMaskHealth)
+        {
+            Debug.Log("Lost final health; game over!");
+            gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
+        }
+        else
+        {
+            CurrentMaskHealth -= Time.deltaTime;
+        }
     }
 }
