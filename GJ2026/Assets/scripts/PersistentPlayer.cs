@@ -44,7 +44,7 @@ public class PersistentPlayer : MonoBehaviour
         if (equippedHost != null)
         {
             // A mask is equipped.
-            //
+            // Specific PlayerControllers will do mask-specific logic.
         }
         else
         {
@@ -53,25 +53,29 @@ public class PersistentPlayer : MonoBehaviour
         }
     }
 
-    public void equipMask(GameObject other)
+    /// <summary>
+    /// May not succeed if the player already has a host equipped.
+    /// </summary>
+    public void TryEquipHost(GameObject enemyToEquip)
     {
-        other.transform.position = new Vector3(0,0,0);
-        other.transform.tag = "area";
-        equippedHost.transform.parent.position = new Vector3(0,0,0);
-        if(other.transform.parent.gameObject.tag == "enemy"){
-            other.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
+        enemyToEquip.transform.position = Vector3.zero;
+        //other.transform.tag = "area";
+        equippedHost.transform.parent.position = Vector3.zero;
+        if(enemyToEquip.transform.parent.gameObject.tag == "enemy")
+        {
+            enemyToEquip.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
         }
         equippedHost.transform.parent.tag = "interactArea";
-        //equippedMask.GetComponent<Host>().IsEquipped = false;
-        equippedHost.transform.parent.SetParent(GameObject.Find("droppedMasks").transform);
-        Debug.Log(other);
-        equippedHost = other.transform.GetChild(0).gameObject;
-        Debug.Log(equippedHost);
-        //equippedMask.GetComponent<Host>().IsEquipped = true;
+        equippedMask.GetComponent<Host>().IsEquipped = false;
+        equippedHost.transform.parent.SetParent(GameObject.Find("UnconsciousEnemies").transform);
+        equippedHost = enemyToEquip.transform.GetChild(0).gameObject;
+        equippedMask.GetComponent<Host>().IsEquipped = true;
         equippedHost.transform.parent.SetParent(transform);
-        Debug.Log(equippedHost.transform.parent.position + " name: " + equippedHost.transform.parent.name);
-        equippedHost.transform.parent.position = new Vector3(0,0,0);
-        Debug.Log(equippedHost.transform.parent.position + " name: " + equippedHost.transform.parent.name);
+        equippedHost.transform.parent.position = Vector3.zero;
+
+        //Debug.Log(other);
+        //Debug.Log(equippedHost);
+        //Debug.Log(equippedHost.transform.parent.position + " name: " + equippedHost.transform.parent.name);
     }
 
     private void CountDownMaskLife()

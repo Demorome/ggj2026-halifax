@@ -4,15 +4,12 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// NOTE: The player may switch from host to host, which may use different PlayerControllers!
+/// This is used to enable multiple different collider shapes for different hosts.
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 10f;
     public Rigidbody rb;
-
-    public enum HostType { None_RegularMask, Mouse, Cat, Human, Deer };
-    public HostType hostType;
-
     public Collider collider;
 
     private GameManager gameManager;
@@ -75,14 +72,19 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (other.CompareTag("interactArea"))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            //Debug.Log("in interact area");
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                Debug.Log("interacting");
-                maskHolder.GetComponent<PersistentPlayer>().equipMask(other.gameObject);
+            Debug.Log("Interacting!");
 
+            if (other.CompareTag("interactArea"))
+            {
+                //Debug.Log("in interact area");
+                // TODO: Add special logic for each different kind of interactArea
+                // TODO: Probably just use different tags for each one!
+            }
+            else if (other.CompareTag("enemy"))
+            {
+                persistentPlayer.TryEquipHost(other.gameObject);
             }
         }
     }
