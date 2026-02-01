@@ -23,8 +23,8 @@ public class PersistentPlayer : MonoBehaviour
     /// </summary>
     public PlayerController controllerWhenInRegularForm;
 
-    public (GameObject, GameObject)? maybeEquippedHostEnemyPair = null;
-    public bool IsHostEquipped => maybeEquippedHostEnemyPair != null;
+    public (GameObject, GameObject)? maybeEquippedHostEnemy = null;
+    public bool IsHostEquipped => maybeEquippedHostEnemy != null;
 
     private GameManager gameManager;
     public GameObject playerHolder;
@@ -91,9 +91,9 @@ public class PersistentPlayer : MonoBehaviour
         //enemyToEquip.transform.parent.gameObject.GetComponent<EnemyCatController>().MaskControl();
 
         // Host version will always be a pre-disabled child of the enemy object.
-        var hostVersion = Transform.FindFirstObjectByType<GameObject>();
+        var hostVersion = enemyToEquip.transform.GetChild(0).gameObject;
         Debug.Log(hostVersion.name);
-        maybeEquippedHostEnemyPair = new(hostVersion, enemyToEquip);
+        maybeEquippedHostEnemy = new(hostVersion, enemyToEquip);
 
         if (!hostVersion.activeInHierarchy)
         {
@@ -108,6 +108,7 @@ public class PersistentPlayer : MonoBehaviour
 
         // enable the host version
         hostVersion.SetActive(true);
+        // FIXME: This will probably break when going back and forth!
         hostVersion.transform.SetParent(playerHolder.transform);
         hostVersion.transform.position = enemyToEquip.transform.position;
 
@@ -126,16 +127,16 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
 
-        var (host, enemy) = maybeEquippedHostEnemyPair.Value;
+        var (host, enemy) = maybeEquippedHostEnemy.Value;
 
         // Re-enable enemy
         enemy.SetActive(true);
         // FIXME: Set the enemy unconscious!!
-        // TODO: Change its transform parent back to enemy holder!
-
+        enemy.transform.position = host.transform.position;
 
         // Disable host (player version)
         host.SetActive(false);
+        host.transform.SetParent(enemy.transform);
     }
 
     private void CountDownMaskLife()
