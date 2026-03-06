@@ -73,8 +73,8 @@ public class EnemyFieldOfView : MonoBehaviour
         {
             Vector3 vertex;
             if (Physics.Raycast(
-                    transform.position,
-                    PointCalcWorldSpace(meshAngle),
+                    rayOrigin,
+                    GetWorldDirectionFromAngle(meshAngle),
                     out RaycastHit raycastHit,
                     viewDistance,
                     layerMask)
@@ -86,14 +86,24 @@ public class EnemyFieldOfView : MonoBehaviour
 
                 hitObjects.Add(raycastHit.transform.gameObject);
 
-                //Debug.DrawRay(rayOrigin, PointCalcWorldSpace(meshAngle) * raycastHit.distance, Color.red);
+                // NOTE: Must enable Gizmos in editor view for this to appear!
+                Debug.DrawRay(
+                    rayOrigin,
+                    vertex,
+                    Color.red
+                    );
             }
             else
             {
                 // Miss!
-                vertex = Vector3.zero + PointCalc(meshAngle);
+                vertex = GetLocalDirectionFromAngle(meshAngle) * viewDistance;
 
-                //Debug.DrawRay(rayOrigin, PointCalcWorldSpace(meshAngle) * viewDistance, Color.red);
+                // NOTE: Must enable Gizmos in editor view for this to appear!
+                Debug.DrawRay(
+                    rayOrigin,
+                    GetWorldDirectionFromAngle(meshAngle) * viewDistance,
+                    Color.green
+                    );
             }
 
             vertices[vertexIndex] = vertex;
@@ -115,7 +125,7 @@ public class EnemyFieldOfView : MonoBehaviour
         mesh.vertices = vertices;
         mesh.uv = uv;
         mesh.triangles = triangles;
-        //mesh.bounds = new Bounds(rayOrigin, Vector3.one * 1000f);
+        mesh.bounds = new Bounds(rayOrigin, Vector3.one * 1000f);
 
         foreach (var hitObject in hitObjects)
         {
@@ -126,18 +136,17 @@ public class EnemyFieldOfView : MonoBehaviour
             }
         }
     }
-    Vector3 PointCalc(float angle)
+    Vector3 GetLocalDirectionFromAngle(float angle)
     {
-        Quaternion pointRot = transform.rotation * Quaternion.AngleAxis(angle, -Vector3.up);
-        Vector3 point = pointRot * Vector3.forward * viewDistance;
-        return point;
+        Quaternion rotationQuat = transform.rotation * Quaternion.AngleAxis(angle, -Vector3.up);
+        Vector3 rotationVec = rotationQuat * Vector3.forward;
+        return rotationVec;
     }
 
-    Vector3 PointCalcWorldSpace(float angle)
+    Vector3 GetWorldDirectionFromAngle(float angle)
     {
-        Quaternion pointRot = transform.rotation * Quaternion.AngleAxis(angle, -Vector3.up);
-        Vector3 point = pointRot * Vector3.forward * viewDistance;
-        Vector3 vectorInWorldSpace = transform.TransformDirection(point);
+        Vector3 rotationVec = GetLocalDirectionFromAngle(angle);
+        Vector3 vectorInWorldSpace = transform.TransformDirection(rotationVec);
         return vectorInWorldSpace;
     }
 }
