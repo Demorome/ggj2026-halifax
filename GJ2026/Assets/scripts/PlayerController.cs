@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 10f;
+    public float rotateSpeed = 150f;
     public Rigidbody rb;
     public Collider collider;
     public PersistentPlayer persistentPlayer;
@@ -28,16 +29,6 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-
-        if (Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(0, Time.deltaTime * 250, 0);
-        }
-
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(0, -Time.deltaTime * 250, 0);
-        }
     }
     void FixedUpdate()
     {
@@ -49,9 +40,16 @@ public class PlayerController : MonoBehaviour
         //rotating based on mouse position
         //rb.rotation =  Quaternion.Euler(-Input.mousePosition.y , Input.mousePosition.x, 0);
 
-        //move based on axis input
+        // Rotate facing direction based on horizontal axis input
+        transform.Rotate(
+            0,
+            Input.GetAxis("Horizontal") * Time.deltaTime * rotateSpeed,
+            0
+            );
+
+        // Move up/down based on vertical axis input, relative to our rotation.
         transform.Translate(
-            Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed,
+            0,
             0,
             Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed,
             Space.Self
