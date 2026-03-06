@@ -28,6 +28,8 @@ public class PersistentPlayer : MonoBehaviour
 
     private GameManager gameManager;
     public GameObject playerHolder;
+    public Camera playerCamera;
+    private Vector3 CameraPosOffset;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,6 +43,8 @@ public class PersistentPlayer : MonoBehaviour
             Debug.Log("Player spawned without a host equipped");
             gameManager.UpdatePlayerHostHealthUI(0, 100);
         }
+
+        CameraPosOffset = playerCamera.transform.position - transform.position;
     }
 
     // Update is called once per frame.
@@ -64,6 +68,11 @@ public class PersistentPlayer : MonoBehaviour
         {
             CountDownFinalLife();
         }
+    }
+
+    void LateUpdate()
+    {
+        playerCamera.transform.position = transform.position + CameraPosOffset;
     }
 
     /// <summary>

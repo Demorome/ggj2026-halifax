@@ -417,7 +417,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1100981140}
   - {fileID: 300367530}
   m_Father: {fileID: 1201956677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -433,9 +432,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e04d978f2683143bf0f831563a8fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PersistentPlayer
-  MaxMaskHealth: 10
+  MaxFinalHealth: 10
   controllerWhenInRegularForm: {fileID: 1201956678}
   playerHolder: {fileID: 1931718316}
+  playerCamera: {fileID: 1100981142}
 --- !u!1 &168107796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,11 +1747,11 @@ Transform:
   m_GameObject: {fileID: 1100981139}
   serializedVersion: 2
   m_LocalRotation: {x: 0.52381504, y: -0, z: -0, w: 0.8518321}
-  m_LocalPosition: {x: 0.21, y: 13.93, z: -5.83}
+  m_LocalPosition: {x: -10.23, y: 13.93, z: -5.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 146385265}
+  m_Father: {fileID: 1931718317}
   m_LocalEulerAnglesHint: {x: 63.177, y: 0, z: 0}
 --- !u!81 &1100981141
 AudioListener:
@@ -1934,6 +1934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 10
+  rotateSpeed: 100
   rb: {fileID: 0}
   collider: {fileID: 0}
   persistentPlayer: {fileID: 146385269}
@@ -2744,6 +2745,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1100981140}
   - {fileID: 1201956677}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
