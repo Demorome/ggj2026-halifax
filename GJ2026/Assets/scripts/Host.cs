@@ -28,7 +28,7 @@ public abstract class Host : MonoBehaviour
         {
             //Debug.Log(transform.name + "is losing life: " + CurrentHostHealthTimer);
             CurrentHostHealthTimer -= Time.deltaTime;
-            GameManager.Instance.UpdateHostHealthUI(CurrentHostHealthTimer, maxHostHealthTimer);
+            GameManager.Instance.UpdatePlayerHostHealthUI(CurrentHostHealthTimer, maxHostHealthTimer);
         }
         else
         {
@@ -36,7 +36,7 @@ public abstract class Host : MonoBehaviour
 
             // TODO: Sound effect, animation, etc.
 
-            GameManager.Instance.UpdateHostHealthUI(0f, maxHostHealthTimer);
+            GameManager.Instance.UpdatePlayerHostHealthUI(0f, maxHostHealthTimer);
 
             // Re-enable the disabled entity.
             if (ReplacedEntity != null)

@@ -14,8 +14,8 @@ public class PersistentPlayer : MonoBehaviour
     /// <summary>
     /// The player's final health reserves when outside of a host.
     /// </summary>
-    public float MaxMaskHealth = 10f;
-    private float CurrentMaskHealth;
+    public float MaxFinalHealth = 10f;
+    private float CurrentFinalHealth;
 
     /// <summary>
     /// Will be disabled when the player enters a host,
@@ -34,12 +34,12 @@ public class PersistentPlayer : MonoBehaviour
     {
         gameManager = GameManager.Instance;
 
-        CurrentMaskHealth = MaxMaskHealth;
+        CurrentFinalHealth = MaxFinalHealth;
 
         if (!IsHostEquipped)
         {
             Debug.Log("Player spawned without a host equipped");
-            gameManager.UpdateHostHealthUI(0, 100);
+            gameManager.UpdatePlayerHostHealthUI(0, 100);
         }
     }
 
@@ -62,7 +62,7 @@ public class PersistentPlayer : MonoBehaviour
         }
         else
         {
-            CountDownMaskLife();
+            CountDownFinalLife();
         }
     }
 
@@ -145,18 +145,18 @@ public class PersistentPlayer : MonoBehaviour
         host.transform.SetParent(enemy.transform);
     }
 
-    private void CountDownMaskLife()
+    private void CountDownFinalLife()
     {
-        if (0 >= CurrentMaskHealth)
+        if (0 >= CurrentFinalHealth)
         {
             Debug.Log("Lost final health; game over!");
             gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
-            gameManager.UpdateMaskPlayerHealthUI(0, MaxMaskHealth);
+            gameManager.UpdatePlayerFinalHealthUI(0, MaxFinalHealth);
         }
         else
         {
-            CurrentMaskHealth -= Time.deltaTime;
-            gameManager.UpdateMaskPlayerHealthUI(CurrentMaskHealth, MaxMaskHealth);
+            CurrentFinalHealth -= Time.deltaTime;
+            gameManager.UpdatePlayerFinalHealthUI(CurrentFinalHealth, MaxFinalHealth);
         }
     }
 }

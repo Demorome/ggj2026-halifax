@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
     private GameObject PauseScreen;
 
     public UIDocument UIDoc;
-    private VisualElement hostHealthMeter;
-    private VisualElement playerHealthMeter;
+    private VisualElement playerHostHealthMeter;
+    private VisualElement playerFinalHealthMeter;
 
     // Global game data
     // TODO: Completed levels? High-scores for each level?
@@ -59,9 +59,9 @@ public class GameManager : MonoBehaviour
                 CurrentPlayingState = PlayingState.Normal;
             }
 
-            hostHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
-            playerHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
-            if (hostHealthMeter == null || playerHealthMeter == null)
+            playerHostHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
+            playerFinalHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
+            if (playerHostHealthMeter == null || playerFinalHealthMeter == null)
             {
                 Debug.LogError("No health label found!");
             }
@@ -287,22 +287,22 @@ public class GameManager : MonoBehaviour
     // GameManager.Instance.AddScore(100);
     // GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
 
-    public void UpdateMaskPlayerHealthUI(float currentHealth, float maxHealth)
+    public void UpdatePlayerFinalHealthUI(float currentHealth, float maxHealth)
     {
         // Credits to https://learn.unity.com/tutorial/make-health-bar-with-UItoolkit
         float healthRatio = currentHealth / maxHealth;
         float healthPercent = Mathf.Lerp(8, 88, healthRatio);
-        playerHealthMeter.style.width = Length.Percent(healthPercent);
+        playerFinalHealthMeter.style.width = Length.Percent(healthPercent);
         //Debug.Log("HostHealth UI width: " + playerHealthMeter.style.width);
     }
 
-    // NOTE: Host health is different from the Mask's own health!
-    public void UpdateHostHealthUI(float currentHealth, float maxHealth)
+    // NOTE: Host health is different from the Player's own final health!
+    public void UpdatePlayerHostHealthUI(float currentHealth, float maxHealth)
     {
         // Credits to https://learn.unity.com/tutorial/make-health-bar-with-UItoolkit
         float healthRatio = currentHealth / maxHealth;
         float healthPercent = Mathf.Lerp(8, 88, healthRatio);
-        hostHealthMeter.style.width = Length.Percent(healthPercent);
+        playerHostHealthMeter.style.width = Length.Percent(healthPercent);
         //Debug.Log("HostHealth UI width: " + hostHealthMeter.style.width);
     }
 }
