@@ -20,16 +20,18 @@ public class PersistentPlayer : MonoBehaviour
     /// </summary>
     public PlayerDefaultFormComponent playerDefaultFormComponent;
 
+    public bool IsHostEquipped => !playerDefaultFormComponent.enabled;
+
     public Camera playerCamera;
     private Vector3 CameraPosOffset;
 
     void Start()
     {
-        /*if (!IsHostEquipped)
+        if (!IsHostEquipped)
         {
             Debug.Log("Player spawned without a host equipped");
             GameManager.Instance.UpdatePlayerHostHealthUI(0, 100);
-        }*/
+        }
 
         CameraPosOffset = playerCamera.transform.position - transform.position;
     }
