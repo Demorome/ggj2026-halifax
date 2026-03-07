@@ -1,60 +1,46 @@
-using System.Linq;
-using Unity.VisualScripting;
+using Components.Actors;
 using UnityEngine;
-using UnityEngine.Animations;
 
 /// <summary>
-/// Unlike PlayerController, this stores player info that is persistent,
-/// even after changing between multiple hosts. <br/>
+/// This is always active, even after changing forms/hosts. <br/>
 ///
-/// This is only persistent during a level, and will get reset if the level is reset.
+/// This object's parent changes when the player changes host/form. <br/>
+/// If player in default form, then parent is a PlayerDefaultForm. <br/>
+/// Otherwise, parent will inherit from ActorForm -> EnemyActorForm. <br/>
+///
+/// Handles camera placement, to follow the player. <br/>
+/// TODO: May handle special transition logic?
 /// </summary>
 public class PersistentPlayer : MonoBehaviour
 {
     /// <summary>
-    /// The player's final health reserves when outside of a host.
+    /// This object will be disabled when the player enters a host. <br/>
+    /// Will be re-enabled when leaving the host,
+    /// unless switching immediately to another host.
     /// </summary>
-    public float MaxFinalHealth = 10f;
-    private float CurrentFinalHealth;
+    public PlayerDefaultFormComponent playerDefaultFormComponent;
 
-    /// <summary>
-    /// Will be disabled when the player enters a host,
-    /// and re-enabled when leaving the host.
-    /// </summary>
-    public PlayerController controllerWhenInRegularForm;
-
-    public (GameObject, GameObject)? maybeEquippedHostEnemy = null;
-    public bool IsHostEquipped => maybeEquippedHostEnemy != null;
-
-    private GameManager gameManager;
-    public GameObject playerHolder;
     public Camera playerCamera;
     private Vector3 CameraPosOffset;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gameManager = GameManager.Instance;
-
-        CurrentFinalHealth = MaxFinalHealth;
-
-        if (!IsHostEquipped)
+        /*if (!IsHostEquipped)
         {
             Debug.Log("Player spawned without a host equipped");
-            gameManager.UpdatePlayerHostHealthUI(0, 100);
-        }
+            GameManager.Instance.UpdatePlayerHostHealthUI(0, 100);
+        }*/
 
         CameraPosOffset = playerCamera.transform.position - transform.position;
     }
 
-    // Update is called once per frame.
     void Update()
     {
-        if (gameManager.CurrentPlayingState != GameManager.PlayingState.Normal)
+        if (GameManager.Instance.CurrentPlayingState != GameManager.PlayingState.Normal)
         {
             return;
         }
-
+        /*
         if (IsHostEquipped)
         {
             // Specific PlayerControllers will do host-specific logic,
@@ -63,11 +49,7 @@ public class PersistentPlayer : MonoBehaviour
             {
                 TryUnequipHost();
             }
-        }
-        else
-        {
-            CountDownFinalLife();
-        }
+        }*/
     }
 
     void LateUpdate()
@@ -75,11 +57,11 @@ public class PersistentPlayer : MonoBehaviour
         playerCamera.transform.position = transform.position + CameraPosOffset;
     }
 
+        /*
     /// <summary>
     /// May not succeed if the player already has a host equipped. <br/>
     ///
-    /// WARNING: the enemy needs to be part of a "enemyAndHostVersionHolder" object,
-    /// and the Host (player-controlled version) needs to be
+    /// WARNING: the Host (player-controlled version) needs to be
     /// a pre-Disabled child of the enemy.<br/>
     ///
     /// The Host object will be automatically moved
@@ -93,7 +75,7 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
 
-        if (enemyToEquip.tag != "enemy")
+        if (!enemyToEquip.CompareTag("enemy"))
         {
             Debug.LogError("Can't equip host; target is not an enemy!");
             return;
@@ -152,20 +134,5 @@ public class PersistentPlayer : MonoBehaviour
         // Disable host (player version)
         host.SetActive(false);
         host.transform.SetParent(enemy.transform);
-    }
-
-    private void CountDownFinalLife()
-    {
-        if (0 >= CurrentFinalHealth)
-        {
-            Debug.Log("Lost final health; game over!");
-            gameManager.ChangePlayingState(GameManager.PlayingState.GameOver);
-            gameManager.UpdatePlayerFinalHealthUI(0, MaxFinalHealth);
-        }
-        else
-        {
-            CurrentFinalHealth -= Time.deltaTime;
-            gameManager.UpdatePlayerFinalHealthUI(CurrentFinalHealth, MaxFinalHealth);
-        }
-    }
+    }*/
 }

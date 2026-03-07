@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5367535904592428477}
   - component: {fileID: 2296486140926382624}
   m_Layer: 0
-  m_Name: FieldOfView
+  m_Name: StandardEnemyFOV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

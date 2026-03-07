@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/*
 public class enemyDetectionEventHandler : MonoBehaviour
 {
     public bool seek = false;
@@ -18,7 +19,7 @@ public class enemyDetectionEventHandler : MonoBehaviour
     public void OnTriggerEnter(Collider collObj)
     {
         //check object tag to see if player
-        if (collObj.tag == "Player")
+        if (collObj.CompareTag("Player"))
         {
             seek = true;
             //Debug.Log("Enter: " + collObj);
@@ -31,7 +32,7 @@ public class enemyDetectionEventHandler : MonoBehaviour
     public void OnTriggerExit(Collider collObj)
     {
         //check object tag of obj leaving to see if player
-        if (collObj.tag == "Player")
+        if (collObj.CompareTag("Player"))
         {
             seek = false;
             //Debug.Log("exit: " + collObj);
@@ -40,3 +41,4 @@ public class enemyDetectionEventHandler : MonoBehaviour
     
 }
 
+*/
