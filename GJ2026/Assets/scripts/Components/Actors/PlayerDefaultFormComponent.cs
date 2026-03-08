@@ -7,7 +7,7 @@ namespace Components.Actors
     /// </summary>
     [RequireComponent(typeof(ActorComponent))]
     [RequireComponent(typeof(ControlledByPlayerComponent))]
-    [RequireComponent(typeof(PlayerOnFinalHealthChangeComponent))]
+    [RequireComponent(typeof(OnPlayerFinalHealthChangeComponent))]
     [RequireComponent(typeof(DrainHealthOverTimeComponent))]
     [RequireComponent(typeof(CameraTargetComponent))]
     [RequireComponent(typeof(CanPossessComponent))]

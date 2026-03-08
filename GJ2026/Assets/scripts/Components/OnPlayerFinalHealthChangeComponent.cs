@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Components
 {
     [RequireComponent(typeof(HealthComponent))]
-    public class PlayerOnFinalHealthChangeComponent : MonoBehaviour
+    public class OnPlayerFinalHealthChangeComponent : MonoBehaviour
     {
         private HealthComponent playerFinalHealth;
 
@@ -13,6 +13,12 @@ namespace Components
 
             playerFinalHealth.OnDeath += OnPlayerDeath;
             playerFinalHealth.OnHealthChanged += OnPlayerHealthChanged;
+
+            // Initialize health UI.
+            OnPlayerHealthChanged(
+                playerFinalHealth.CurrentHealth,
+                playerFinalHealth.maxHealth
+            );
         }
 
 

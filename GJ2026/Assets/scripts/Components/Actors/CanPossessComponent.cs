@@ -122,7 +122,7 @@ namespace Components.Actors
                 defaultPlayerForm.gameObject.SetActive(false);
             }
 
-            AddPlayerRelatedComponentsToNewHost(targetToPossess);
+            AddPlayerRelatedComponentsToNewForm(targetToPossess);
             DisableEnemyRelatedComponentsFromNewHost(targetToPossess);
         }
 
@@ -149,24 +149,24 @@ namespace Components.Actors
             // TODO: Add position offset, so player doesn't spawn inside/on top of old host?
             newForm.transform.position = previousHost.transform.position;
 
-            AddPlayerRelatedComponentsToNewHost(newForm);
+            AddPlayerRelatedComponentsToNewForm(newForm);
             RemovePlayerRelatedComponentsFromOldHost(previousHost);
             EnableEnemyRelatedComponentsFromOldHost(previousHost);
         }
 
-        private void AddPlayerRelatedComponentsToNewHost(GameObject newHost)
+        private void AddPlayerRelatedComponentsToNewForm(GameObject newForm)
         {
             // Default player form will only be disabled/re-enabled,
             // so it won't need these components to be added.
-            if (newHost != defaultPlayerForm.gameObject)
+            if (newForm != defaultPlayerForm.gameObject)
             {
-                newHost.AddComponent(typeof(CameraTargetComponent));
-                newHost.AddComponent(typeof(ControlledByPlayerComponent));
-                newHost.AddComponent(typeof(OnHostLifeChangeComponent));
-                newHost.AddComponent(typeof(DrainHealthOverTimeComponent));
+                newForm.AddComponent(typeof(CameraTargetComponent));
+                newForm.AddComponent(typeof(ControlledByPlayerComponent));
+                newForm.AddComponent(typeof(OnHostLifeChangeComponent));
+                newForm.AddComponent(typeof(DrainHealthOverTimeComponent));
             }
 
-            TransferThisComponentToTarget(newHost);
+            TransferThisComponentToTarget(newForm);
         }
         private void RemovePlayerRelatedComponentsFromOldHost(GameObject oldHost)
         {
