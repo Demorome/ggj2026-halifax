@@ -14,5 +14,31 @@ namespace Components
         // Should this always be based off Alert state,
         // or should we allow it to be set by triggering
         // certain states too???
+
+        private void Start()
+        {
+            var healthComponent = GetComponent<HealthComponent>();
+            if (healthComponent)
+            {
+                healthComponent.OnDeath += DestroyThisOnDeath;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            var healthComponent = GetComponent<HealthComponent>();
+            if (healthComponent)
+            {
+                healthComponent.OnDeath -= DestroyThisOnDeath;
+            }
+        }
+
+        /// <summary>
+        /// Ensure we can't possess a dead host by removing this component on death.
+        /// </summary>
+        private void DestroyThisOnDeath()
+        {
+            Destroy(this);
+        }
     }
 }
