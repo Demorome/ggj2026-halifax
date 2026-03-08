@@ -33,7 +33,11 @@ public class PersistentPlayer : MonoBehaviour
             GameManager.Instance.UpdatePlayerHostHealthUI(0, 100);
         }
 
+        // Save only the Y offset, aka the distance from the
+        // camera from a bird's eye view.
         CameraPosOffset = playerCamera.transform.position - transform.position;
+        CameraPosOffset.x = 0;
+        CameraPosOffset.z = 0;
     }
 
     void Update()
@@ -43,6 +47,7 @@ public class PersistentPlayer : MonoBehaviour
             return;
         }
         /*
+         TODO: IMPLEMENT!
         if (IsHostEquipped)
         {
             // Specific PlayerControllers will do host-specific logic,
