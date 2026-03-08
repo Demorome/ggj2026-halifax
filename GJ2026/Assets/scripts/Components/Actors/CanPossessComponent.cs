@@ -7,7 +7,6 @@ namespace Components.Actors
         /// <summary>
         /// Determines how close the player needs to be to possess someone. <br/>
         /// TODO: Make this the same as general interaction range?
-        /// TODO: Highlight if possessable enemy is withing range.
         /// </summary>
         public float possessionRange = 25f;
 
@@ -17,33 +16,49 @@ namespace Components.Actors
         /// Will be re-enabled when leaving the host,
         /// unless switching immediately to another host.
         /// </summary>
-        private PlayerDefaultFormComponent defaultForm;
+        private PlayerDefaultFormComponent defaultPlayerForm;
 
-        private bool IsPossessingHost => defaultForm != null
-                                        && !defaultForm.isActiveAndEnabled;
+        private bool IsPossessingHost => defaultPlayerForm != null
+                                        && !defaultPlayerForm.isActiveAndEnabled;
 
         void Start()
         {
-            if (!defaultForm)
+            if (!defaultPlayerForm)
             {
-                defaultForm = FindAnyObjectByType<PlayerDefaultFormComponent>();
+                defaultPlayerForm = FindAnyObjectByType<PlayerDefaultFormComponent>();
             }
-            if (!defaultForm)
+            if (!defaultPlayerForm)
             {
                 Debug.LogError("Can't find object with PlayerDefaultForm Component!");
             }
 
             if (!IsPossessingHost)
             {
-                Debug.Log("Player spawned without a host equipped");
+                Debug.Log("Player either spawned without a host equipped, or just left their host.");
                 GameManager.Instance.UpdatePlayerHostHealthUI(0, 100);
+            }
+            else
+            {
+                // Register on-death handler to auto-exit the host.
+                var healthComponent = GetComponent<HealthComponent>();
+                if (healthComponent)
+                {
+                    healthComponent.OnDeath += TryLeaveCurrentHost;
+                }
             }
         }
 
         private void Update()
         {
+            if (GameManager.Instance.CurrentPlayingState != GameManager.PlayingState.Normal
+                || GameManager.Instance.IsLoading)
+            {
+                return;
+            }
+
             // Handle possession/host-switching logic.
             // Host-specific gameplay logic should be handled in separate components.
+            // TODO: Highlight nearby hosts that can be possessed!
             if (IsPossessingHost)
             {
                 if (Input.GetKeyDown(KeyCode.X))
@@ -102,12 +117,12 @@ namespace Components.Actors
             GameObject previousForm = this.gameObject;
 
             // Disable the player default form, if that was the previous form.
-            if (previousForm == defaultForm.gameObject)
+            if (previousForm == defaultPlayerForm.gameObject)
             {
-                defaultForm.gameObject.SetActive(false);
+                defaultPlayerForm.gameObject.SetActive(false);
             }
 
-            AddPlayerRelatedComponentsToNewForm(targetToPossess);
+            AddPlayerRelatedComponentsToNewHost(targetToPossess);
             DisableEnemyRelatedComponentsFromNewHost(targetToPossess);
         }
 
@@ -122,28 +137,36 @@ namespace Components.Actors
                 return;
             }
 
-            GameObject previousForm = this.gameObject;
-            GameObject newForm = defaultForm.gameObject;
+            GameObject previousHost = this.gameObject;
+            GameObject newForm = defaultPlayerForm.gameObject;
 
             // Set the current host unconscious
             // TODO: Might need to call an init function here?
-            previousForm.AddComponent(typeof(KnockedOutComponent));
+            previousHost.AddComponent(typeof(KnockedOutComponent));
 
             newForm.SetActive(true);
 
-            AddPlayerRelatedComponentsToNewForm(newForm);
-            RemovePlayerRelatedComponentsFromOldHost(previousForm);
-            EnableEnemyRelatedComponentsFromOldHost(previousForm);
+            // TODO: Add position offset, so player doesn't spawn inside/on top of old host?
+            newForm.transform.position = previousHost.transform.position;
+
+            AddPlayerRelatedComponentsToNewHost(newForm);
+            RemovePlayerRelatedComponentsFromOldHost(previousHost);
+            EnableEnemyRelatedComponentsFromOldHost(previousHost);
         }
 
-        private void AddPlayerRelatedComponentsToNewForm(GameObject newForm)
+        private void AddPlayerRelatedComponentsToNewHost(GameObject newHost)
         {
-            newForm.AddComponent(typeof(CameraTargetComponent));
-            newForm.AddComponent(typeof(ControlledByPlayerComponent));
-            newForm.AddComponent(typeof(OnHostLifeChangeComponent));
-            newForm.AddComponent(typeof(DrainHealthOverTimeComponent));
+            // Default player form will only be disabled/re-enabled,
+            // so it won't need these components to be added.
+            if (newHost != defaultPlayerForm.gameObject)
+            {
+                newHost.AddComponent(typeof(CameraTargetComponent));
+                newHost.AddComponent(typeof(ControlledByPlayerComponent));
+                newHost.AddComponent(typeof(OnHostLifeChangeComponent));
+                newHost.AddComponent(typeof(DrainHealthOverTimeComponent));
+            }
 
-            TransferThisComponentToTarget(newForm);
+            TransferThisComponentToTarget(newHost);
         }
         private void RemovePlayerRelatedComponentsFromOldHost(GameObject oldHost)
         {
@@ -151,8 +174,6 @@ namespace Components.Actors
             Destroy(oldHost.GetComponent(typeof(ControlledByPlayerComponent)));
             Destroy(oldHost.GetComponent(typeof(OnHostLifeChangeComponent)));
             Destroy(oldHost.GetComponent(typeof(DrainHealthOverTimeComponent)));
-
-            TransferThisComponentToTarget(oldHost);
         }
 
         private void DisableEnemyRelatedComponentsFromNewHost(GameObject newHost)
@@ -165,10 +186,7 @@ namespace Components.Actors
 
             newHost.GetComponent<AlertStateComponent>().enabled = false;
             newHost.GetComponent<FieldOfViewComponent>().enabled = false;
-
-            // Disable FOV visual renderer.
-            newHost.GetComponent<MeshRenderer>().enabled = false;
-
+            newHost.GetComponent<MeshRenderer>().enabled = false; // FOV visual renderer.
             newHost.GetComponent<EnemyActorComponent>().enabled = false;
         }
         private void EnableEnemyRelatedComponentsFromOldHost(GameObject oldHost)
@@ -178,31 +196,29 @@ namespace Components.Actors
                 Debug.Log("No enemy-related actor components to re-enable.");
                 return;
             }
+
             oldHost.GetComponent<AlertStateComponent>().enabled = true;
             oldHost.GetComponent<FieldOfViewComponent>().enabled = true;
-
-            // Enable FOV visual renderer.
-            oldHost.GetComponent<MeshRenderer>().enabled = true;
-
+            oldHost.GetComponent<MeshRenderer>().enabled = true; // FOV visual renderer.
             oldHost.GetComponent<EnemyActorComponent>().enabled = true;
         }
 
         private void TransferThisComponentToTarget(GameObject target)
         {
-            if (target == defaultForm.gameObject)
+            if (target == defaultPlayerForm.gameObject)
             {
-                GetComponent<CanPossessComponent>().enabled = true;
+                target.GetComponent<CanPossessComponent>().enabled = true;
             }
             else
             {
                 var transferredComponent = (CanPossessComponent)target
                     .AddComponent(typeof(CanPossessComponent));
 
-                transferredComponent.defaultForm = defaultForm;
+                transferredComponent.defaultPlayerForm = defaultPlayerForm;
                 transferredComponent.possessionRange = possessionRange;
             }
 
-            if (this.gameObject == defaultForm.gameObject)
+            if (this.gameObject == defaultPlayerForm.gameObject)
             {
                 this.enabled = false;
             }
