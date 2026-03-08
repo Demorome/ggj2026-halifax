@@ -840,17 +840,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4725195466223345665, guid: 1db86c48d2398b01fb17c6e4ed8ab33e, type: 3}
   m_PrefabInstance: {fileID: 7995821509501410237}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &413224646 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9126973128645005267, guid: 1db86c48d2398b01fb17c6e4ed8ab33e, type: 3}
-  m_PrefabInstance: {fileID: 7995821509501410237}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c806b4c6525a4ce483f649cfe07a4a58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Components.Actors.PlayerDefaultFormComponent
 --- !u!1 &416342053
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,52 +1187,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &714999290
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 714999291}
-  - component: {fileID: 714999292}
-  m_Layer: 6
-  m_Name: persistentPlayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &714999291
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 714999290}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 413224645}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &714999292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 714999290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6e04d978f2683143bf0f831563a8fe5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PersistentPlayer
-  playerDefaultFormComponent: {fileID: 413224646}
-  playerCamera: {fileID: 1154889468}
 --- !u!1001 &775753537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1585,6 +1528,7 @@ GameObject:
   - component: {fileID: 1154889470}
   - component: {fileID: 1154889468}
   - component: {fileID: 1154889469}
+  - component: {fileID: 1154889471}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1659,13 +1603,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1154889467}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.305316, y: 30.420498, z: -15.140816}
+  m_LocalRotation: {x: 0.6673782, y: -0, z: -0, w: 0.74471897}
+  m_LocalPosition: {x: -13.44, y: 30.420498, z: -11.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 83.73, y: 0, z: 0}
+--- !u!114 &1154889471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154889467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43ef25bd7ce45849eb2cb035865b7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  isCameraStatic: 0
 --- !u!1001 &1213278591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2680,10 +2637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4725195466223345665, guid: 1db86c48d2398b01fb17c6e4ed8ab33e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 714999291}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1db86c48d2398b01fb17c6e4ed8ab33e, type: 3}
 --- !u!1660057539 &9223372036854775807
