@@ -21,7 +21,9 @@ namespace Components.Actors
         private bool IsPossessingHost => defaultPlayerForm != null
                                         && !defaultPlayerForm.isActiveAndEnabled;
 
-        void Start()
+        private bool registeredOnDeathEvent = false;
+
+        private void Start()
         {
             if (!defaultPlayerForm)
             {
@@ -43,8 +45,19 @@ namespace Components.Actors
                 var healthComponent = GetComponent<HealthComponent>();
                 if (healthComponent)
                 {
+                    registeredOnDeathEvent = true;
                     healthComponent.OnDeath += TryLeaveCurrentHost;
                 }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            // Un-register on-death handler.
+            var healthComponent = GetComponent<HealthComponent>();
+            if (healthComponent && registeredOnDeathEvent)
+            {
+                healthComponent.OnDeath -= TryLeaveCurrentHost;
             }
         }
 
@@ -98,7 +111,7 @@ namespace Components.Actors
                 Debug.LogError("TryPossessHost: Target should be active/enabled!");
                 return;
             }
-            if (!targetToPossess.GetComponent(typeof(CanBePosessedComponent)))
+            if (!targetToPossess.GetComponent(typeof(CanBePossessedComponent)))
             {
                 Debug.LogError("TryPossessHost: Can't equip host; target can't be possessed!");
                 return;
@@ -123,7 +136,9 @@ namespace Components.Actors
             }
 
             AddPlayerRelatedComponentsToNewForm(targetToPossess);
-            DisableEnemyRelatedComponentsFromNewHost(targetToPossess);
+            KnockEnemyUnconscious(targetToPossess);
+
+            TransferThisComponentToTarget(targetToPossess);
         }
 
         /// <summary>
@@ -140,18 +155,17 @@ namespace Components.Actors
             GameObject previousHost = this.gameObject;
             GameObject newForm = defaultPlayerForm.gameObject;
 
-            // Set the current host unconscious
-            // TODO: Might need to call an init function here?
-            previousHost.AddComponent(typeof(KnockedOutComponent));
-
             newForm.SetActive(true);
 
             // TODO: Add position offset, so player doesn't spawn inside/on top of old host?
+            // TODO: Or, disable collision for unconscious actors.
             newForm.transform.position = previousHost.transform.position;
 
             AddPlayerRelatedComponentsToNewForm(newForm);
             RemovePlayerRelatedComponentsFromOldHost(previousHost);
-            EnableEnemyRelatedComponentsFromOldHost(previousHost);
+            KnockEnemyUnconscious(previousHost);
+
+            TransferThisComponentToTarget(newForm);
         }
 
         private void AddPlayerRelatedComponentsToNewForm(GameObject newForm)
@@ -165,8 +179,6 @@ namespace Components.Actors
                 newForm.AddComponent(typeof(OnHostLifeChangeComponent));
                 newForm.AddComponent(typeof(DrainHealthOverTimeComponent));
             }
-
-            TransferThisComponentToTarget(newForm);
         }
         private void RemovePlayerRelatedComponentsFromOldHost(GameObject oldHost)
         {
@@ -176,31 +188,14 @@ namespace Components.Actors
             Destroy(oldHost.GetComponent(typeof(DrainHealthOverTimeComponent)));
         }
 
-        private void DisableEnemyRelatedComponentsFromNewHost(GameObject newHost)
+        private void KnockEnemyUnconscious(GameObject enemy)
         {
-            if (!newHost.GetComponent<EnemyActorComponent>())
+            // Set the current host unconscious,
+            // so it won't hurt us after we leave it.
+            if (!enemy.GetComponent<IsHostBodyUnconsciousComponent>())
             {
-                Debug.Log("No enemy-related actor components to disable.");
-                return;
+                enemy.AddComponent(typeof(IsHostBodyUnconsciousComponent));
             }
-
-            newHost.GetComponent<AlertStateComponent>().enabled = false;
-            newHost.GetComponent<FieldOfViewComponent>().enabled = false;
-            newHost.GetComponent<MeshRenderer>().enabled = false; // FOV visual renderer.
-            newHost.GetComponent<EnemyActorComponent>().enabled = false;
-        }
-        private void EnableEnemyRelatedComponentsFromOldHost(GameObject oldHost)
-        {
-            if (!oldHost.GetComponent<EnemyActorComponent>())
-            {
-                Debug.Log("No enemy-related actor components to re-enable.");
-                return;
-            }
-
-            oldHost.GetComponent<AlertStateComponent>().enabled = true;
-            oldHost.GetComponent<FieldOfViewComponent>().enabled = true;
-            oldHost.GetComponent<MeshRenderer>().enabled = true; // FOV visual renderer.
-            oldHost.GetComponent<EnemyActorComponent>().enabled = true;
         }
 
         private void TransferThisComponentToTarget(GameObject target)
@@ -228,15 +223,15 @@ namespace Components.Actors
             }
         }
 
-        private CanBePosessedComponent GetClosestHostInRange()
+        private CanBePossessedComponent GetClosestHostInRange()
         {
-            CanBePosessedComponent closestTarget = null;
+            CanBePossessedComponent closestTarget = null;
             float closestDistance = float.MaxValue;
             Vector3 currentPosition = transform.position;
 
             // TODO: Optimize, if needed.
             foreach (var host
-                     in FindObjectsByType<CanBePosessedComponent>(
+                     in FindObjectsByType<CanBePossessedComponent>(
                          FindObjectsInactive.Exclude,
                          FindObjectsSortMode.None
                      )
