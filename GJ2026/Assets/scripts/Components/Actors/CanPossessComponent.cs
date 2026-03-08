@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Components.Actors
@@ -10,6 +11,9 @@ namespace Components.Actors
         /// </summary>
         public float possessionRange = 25f;
 
+        public event Action OnPlayerEnterHost;
+        public event Action OnPlayerExitHost;
+
         /// <summary>
         /// The form to revert to once no longer possessing anyone. <br/>
         /// This object will be disabled when the player enters a host. <br/>
@@ -18,7 +22,7 @@ namespace Components.Actors
         /// </summary>
         private PlayerDefaultFormComponent defaultPlayerForm;
 
-        private bool IsPossessingHost => defaultPlayerForm != null
+        public bool IsPossessingHost => defaultPlayerForm != null
                                         && !defaultPlayerForm.isActiveAndEnabled;
 
         private bool registeredOnDeathEvent = false;
@@ -137,8 +141,9 @@ namespace Components.Actors
 
             AddPlayerRelatedComponentsToNewForm(targetToPossess);
             KnockEnemyUnconscious(targetToPossess);
-
             TransferThisComponentToTarget(targetToPossess);
+
+            OnPlayerEnterHost?.Invoke();
         }
 
         /// <summary>
@@ -164,8 +169,9 @@ namespace Components.Actors
             AddPlayerRelatedComponentsToNewForm(newForm);
             RemovePlayerRelatedComponentsFromOldHost(previousHost);
             KnockEnemyUnconscious(previousHost);
-
             TransferThisComponentToTarget(newForm);
+
+            OnPlayerExitHost?.Invoke();
         }
 
         private void AddPlayerRelatedComponentsToNewForm(GameObject newForm)
@@ -200,18 +206,22 @@ namespace Components.Actors
 
         private void TransferThisComponentToTarget(GameObject target)
         {
+            CanPossessComponent transferredComponent;
             if (target == defaultPlayerForm.gameObject)
             {
-                target.GetComponent<CanPossessComponent>().enabled = true;
+                transferredComponent = target.GetComponent<CanPossessComponent>();
+                transferredComponent.enabled = true;
             }
             else
             {
-                var transferredComponent = (CanPossessComponent)target
+                transferredComponent = (CanPossessComponent)target
                     .AddComponent(typeof(CanPossessComponent));
-
-                transferredComponent.defaultPlayerForm = defaultPlayerForm;
-                transferredComponent.possessionRange = possessionRange;
             }
+
+            transferredComponent.defaultPlayerForm = defaultPlayerForm;
+            transferredComponent.possessionRange = possessionRange;
+            transferredComponent.OnPlayerEnterHost = OnPlayerEnterHost;
+            transferredComponent.OnPlayerExitHost = OnPlayerExitHost;
 
             if (this.gameObject == defaultPlayerForm.gameObject)
             {
