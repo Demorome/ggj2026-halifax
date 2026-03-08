@@ -83,7 +83,7 @@ namespace Components.Actors
             {
                 if (Input.GetKeyDown(KeyCode.X))
                 {
-                    var maybeNearbyHost = GetClosestHostInRange();
+                    var maybeNearbyHost = GetClosestAliveHostInRange();
                     if (maybeNearbyHost)
                     {
                         TryPossessHost(maybeNearbyHost.gameObject);
@@ -223,7 +223,7 @@ namespace Components.Actors
             }
         }
 
-        private CanBePossessedComponent GetClosestHostInRange()
+        private CanBePossessedComponent GetClosestAliveHostInRange()
         {
             CanBePossessedComponent closestTarget = null;
             float closestDistance = float.MaxValue;
@@ -242,6 +242,7 @@ namespace Components.Actors
                 Vector3 differenceToTarget = host.transform.position - currentPosition;
                 float distanceSquaredToTarget = differenceToTarget.sqrMagnitude;
 
+                // TODO: Cache possessionRangeSquared
                 if (distanceSquaredToTarget > (possessionRange * possessionRange))
                 {
                     continue;
