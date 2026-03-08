@@ -10,7 +10,7 @@ namespace Components.Actors
     [RequireComponent(typeof(PlayerOnFinalHealthChangeComponent))]
     [RequireComponent(typeof(DrainHealthOverTimeComponent))]
     [RequireComponent(typeof(CameraTargetComponent))]
-    [RequireComponent(typeof(CanPossess))]
+    [RequireComponent(typeof(CanPossessComponent))]
     public class PlayerDefaultFormComponent : MonoBehaviour
     {
 

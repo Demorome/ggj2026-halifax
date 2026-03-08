@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Components
 {
     [RequireComponent(typeof(HealthComponent))]
-    public class HostLifeBehaviorsComponent : MonoBehaviour
+    public class OnHostLifeChangeComponent : MonoBehaviour
     {
         private HealthComponent hostHealth;
         

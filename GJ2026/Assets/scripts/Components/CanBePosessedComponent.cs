@@ -1,7 +1,9 @@
+using Components.Actors;
 using UnityEngine;
 
 namespace Components
 {
+    [RequireComponent(typeof(HealthComponent))]
     public class CanBePosessedComponent : MonoBehaviour
     {
         // TODO: Implement!
