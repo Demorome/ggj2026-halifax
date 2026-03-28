@@ -1,7 +1,8 @@
 using System;
+using Components.Actors;
 using UnityEngine;
 
-namespace Components.Actors
+namespace Components
 {
     public class CanPossessComponent : MonoBehaviour
     {
@@ -13,6 +14,14 @@ namespace Components.Actors
 
         public event Action OnPlayerEnterHost;
         public event Action OnPlayerExitHost;
+
+        /// <summary>
+        /// We're caching this for other game systems to utilize. <br/>
+        /// Ex: level objectives can check this
+        /// to see what form the player is currently in,
+        /// especially for the start of the level.
+        /// </summary>
+        public static GameObject CurrentPlayerForm { get; private set; }
 
         /// <summary>
         /// The form to revert to once no longer possessing anyone. <br/>
@@ -33,6 +42,9 @@ namespace Components.Actors
             {
                 defaultPlayerForm = FindAnyObjectByType<PlayerDefaultFormComponent>();
             }
+
+            CurrentPlayerForm = defaultPlayerForm.gameObject;
+
             if (!defaultPlayerForm)
             {
                 Debug.LogError("Can't find object with PlayerDefaultForm Component!");
@@ -143,6 +155,7 @@ namespace Components.Actors
             KnockEnemyUnconscious(targetToPossess);
             TransferThisComponentToTarget(targetToPossess);
 
+            CurrentPlayerForm = targetToPossess;
             OnPlayerEnterHost?.Invoke();
         }
 
@@ -171,6 +184,7 @@ namespace Components.Actors
             KnockEnemyUnconscious(previousHost);
             TransferThisComponentToTarget(newForm);
 
+            CurrentPlayerForm = newForm;
             OnPlayerExitHost?.Invoke();
         }
 
@@ -198,9 +212,9 @@ namespace Components.Actors
         {
             // Set the current host unconscious,
             // so it won't hurt us after we leave it.
-            if (!enemy.GetComponent<IsHostBodyUnconsciousComponent>())
+            if (!enemy.GetComponent<IsNPCActorUnconsciousComponent>())
             {
-                enemy.AddComponent(typeof(IsHostBodyUnconsciousComponent));
+                enemy.AddComponent(typeof(IsNPCActorUnconsciousComponent));
             }
         }
 

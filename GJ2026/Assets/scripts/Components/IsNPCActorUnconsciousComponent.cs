@@ -9,7 +9,7 @@ namespace Components
     /// Disables alert state, FOV, EnemyActorComponent, etc. while attached to an object/entity. <br/>
     /// WARNING: Currently assumes this will only be used against non-player actors.
     /// </summary>
-    public class IsHostBodyUnconsciousComponent : MonoBehaviour
+    public class IsNPCActorUnconsciousComponent : MonoBehaviour
     {
         private void ToggleComponents(bool enable)
         {
