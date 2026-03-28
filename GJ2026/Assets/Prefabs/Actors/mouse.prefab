@@ -22,6 +22,9 @@ GameObject:
   - component: {fileID: 8196787186169321838}
   - component: {fileID: 3395968128200657930}
   - component: {fileID: 7669997154749213199}
+  - component: {fileID: 5812041132817279625}
+  - component: {fileID: 3583781436515151796}
+  - component: {fileID: 6526031656178026743}
   m_Layer: 6
   m_Name: mouse
   m_TagString: Untagged
@@ -204,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 421e4745dede421abedf00c427952a01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.MassComponent
-  mass: 0
+  mass: 5
 --- !u!23 &8196787186169321838
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -274,6 +277,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e179e56ac6514db3941d614b465c636b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.CanBePosessedComponent
+--- !u!114 &5812041132817279625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3646770313445626839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32e893dca2ded74b99da86865e391c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.Actors.ActorComponent
+--- !u!114 &3583781436515151796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3646770313445626839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5218d2110c654e518e18cb985b797550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.CanEnterHolesComponent
+--- !u!114 &6526031656178026743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3646770313445626839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a783eb199f204dca9b41b8dacc8deea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.CanCollectCheese
+  cheeseCount: 0
 --- !u!1 &8477382429219006021
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,8 +342,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.46, y: 0.46, z: 0.46}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2003580991009953724}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -374,15 +414,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.24355054
+      value: 0.16
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.24355054
+      value: 0.16
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.24355054
+      value: 0.16
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
       propertyPath: m_LocalPosition.x
@@ -394,7 +434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.69
+      value: 0.402
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c17320af61e6c3c04bbf4f01e9960f56, type: 3}
       propertyPath: m_LocalRotation.w

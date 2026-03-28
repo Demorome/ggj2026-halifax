@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 421e4745dede421abedf00c427952a01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.MassComponent
-  mass: 0
+  mass: 25
 --- !u!114 &8836883736040910206
 MonoBehaviour:
   m_ObjectHideFlags: 0
