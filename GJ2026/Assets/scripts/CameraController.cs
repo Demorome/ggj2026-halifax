@@ -62,8 +62,23 @@ public class CameraController : MonoBehaviour
 
         if (cameraTargetComponent)
         {
+            float cameraZoomOutLevel;
+            if (cameraTargetComponent.gameObject.TryGetComponent(
+                    typeof(MassComponent),
+                    out Component massComponent))
+            {
+                // Zoom out more if we're controlling something bigger.
+                var sizePercent = ((MassComponent)massComponent).MassPercent;
+
+                cameraZoomOutLevel = 1 + sizePercent;
+            }
+            else
+            {
+                cameraZoomOutLevel = 1f;
+            }
+
             transform.position = cameraTargetComponent.transform.position
-                                 + new Vector3(0, cameraPosYOffset, 0);
+                                 + new Vector3(0, cameraPosYOffset * cameraZoomOutLevel, 0);
         }
         else
         {
