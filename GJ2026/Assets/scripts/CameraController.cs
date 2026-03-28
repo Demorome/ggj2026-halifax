@@ -69,8 +69,9 @@ public class CameraController : MonoBehaviour
             {
                 // Zoom out more if we're controlling something bigger.
                 var sizePercent = ((MassComponent)massComponent).MassPercent;
+                float minCameraZoom = 0.5f;
 
-                cameraZoomOutLevel = 1 + sizePercent;
+                cameraZoomOutLevel = minCameraZoom + sizePercent;
             }
             else
             {
