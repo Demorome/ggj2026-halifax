@@ -19,12 +19,11 @@ GameObject:
   - component: {fileID: 134918950128956943}
   - component: {fileID: 3921318411157947353}
   - component: {fileID: 6863614045976917685}
-  - component: {fileID: 8836883736040910206}
   - component: {fileID: 8196787186169321838}
   - component: {fileID: 3395968128200657930}
   - component: {fileID: 7669997154749213199}
   m_Layer: 6
-  m_Name: cat
+  m_Name: mouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b9bb0324544126a82ed8d2f15e5233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.ActorTypeComponent
-  actorType: 2
+  actorType: 1
 --- !u!54 &5774215886439333009
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -206,18 +205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.MassComponent
   mass: 0
---- !u!114 &8836883736040910206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3646770313445626839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d32e893dca2ded74b99da86865e391c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Components.Actors.ActorComponent
 --- !u!23 &8196787186169321838
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -299,7 +286,7 @@ GameObject:
   - component: {fileID: 3512273396822645975}
   - component: {fileID: 3112286447387964797}
   m_Layer: 6
-  m_Name: CatModel
+  m_Name: MouseModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

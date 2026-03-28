@@ -5,8 +5,10 @@ namespace Components
     public enum ActorType
     {
         PlayerMaskWithoutHost = 0,
+        Mouse,
         Cat,
-        Dog
+        Dog,
+        Human,
     }
 
     /// <summary>
