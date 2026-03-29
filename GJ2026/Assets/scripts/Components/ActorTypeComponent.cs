@@ -9,6 +9,7 @@ namespace Components
         Cat,
         Dog,
         Human,
+        Unknown
     }
 
     /// <summary>
