@@ -151,6 +151,7 @@ namespace Components
                 defaultPlayerForm.gameObject.SetActive(false);
             }
 
+            TransferPlayerInteractionZone(previousForm, targetToPossess);
             AddPlayerRelatedComponentsToNewForm(targetToPossess);
             KnockEnemyUnconscious(targetToPossess);
             TransferThisComponentToTarget(targetToPossess);
@@ -179,6 +180,7 @@ namespace Components
             // TODO: Or, disable collision for unconscious actors.
             newForm.transform.position = previousHost.transform.position;
 
+            TransferPlayerInteractionZone(previousHost, newForm);
             AddPlayerRelatedComponentsToNewForm(newForm);
             RemovePlayerRelatedComponentsFromOldHost(previousHost);
             KnockEnemyUnconscious(previousHost);
@@ -186,6 +188,23 @@ namespace Components
 
             CurrentPlayerForm = newForm;
             OnPlayerExitHost?.Invoke();
+        }
+
+        private void TransferPlayerInteractionZone(GameObject oldForm, GameObject newForm)
+        {
+            // Always expect the zone interaction child to be the last child, i.e. bottom-most.
+            var zoneTransform = oldForm.transform.GetChild(oldForm.transform.childCount - 1);
+            var zoneObject = zoneTransform.gameObject;
+            if (zoneObject.TryGetComponent(typeof(InteractionZoneComponent), out var zoneComponent))
+            {
+                zoneTransform.SetParent(newForm.transform);
+                zoneTransform.position = newForm.transform.position;
+                ((InteractionZoneComponent)zoneComponent).Reset();
+            }
+            else
+            {
+                Debug.LogError("Can't transfer player interaction zone: Missing component.");
+            }
         }
 
         private void AddPlayerRelatedComponentsToNewForm(GameObject newForm)

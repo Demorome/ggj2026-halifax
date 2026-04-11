@@ -62,30 +62,6 @@ namespace Components
             }
         }
 
-        public void OnTriggerStay(Collider other)
-        {
-            if (GameManager.Instance.CurrentPlayingState != GameManager.PlayingState.Normal)
-            {
-                return;
-            }
-
-            // TODO: Implement!!
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                Debug.Log("Interacting!");
-
-                if (other.CompareTag("interactArea"))
-                {
-                    //Debug.Log("in interact area");
-                    // TODO: Add special logic for each different kind of interactArea!
-                }
-                else if (other.CompareTag("enemy"))
-                {
-                    //persistentPlayer.TryEquipEnemyAsHost(other.gameObject);
-                }
-            }
-        }
-
         // Knock back method for if hit
         public void knockback(Quaternion rotation, float knockback)
         {

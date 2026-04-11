@@ -41,6 +41,9 @@ namespace Components
 
         private void Start()
         {
+            // Always ignore objects that want to ignore raycasts.
+            layerMask.value &= ~(1 << LayerMask.NameToLayer("Ignore Raycast"));
+
             meshRenderer = gameObject.GetComponent<MeshRenderer>();
             meshRenderer.material.color = colorWhenPatrolling;
             meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -92,13 +95,12 @@ namespace Components
         // Credits to https://discussions.unity.com/t/trouble-with-mesh-generation-for-a-field-of-view/910678/6
         public void MeshGenQuarternionCalcs()
         {
-            int raycount = rayCount;
-            float meshAngle = AimDirectionStartingAngle + fov/2;
-            float angleIncrease = fov / raycount;
+            float meshAngle = AimDirectionStartingAngle + (fov / 2);
+            float angleIncrease = fov / rayCount;
 
-            Vector3[] vertices = new Vector3[raycount + 1 + 1]; // positioning of points
+            Vector3[] vertices = new Vector3[rayCount + 1 + 1]; // positioning of points
             Vector2[] uv = new Vector2[vertices.Length]; // texture rendered - vector 2 as the image it references is flat 2d so it uses vector 2 only
-            int[] triangles = new int[raycount * 3]; // actual points of the mesh
+            int[] triangles = new int[rayCount * 3]; // actual points of the mesh
 
             Vector3 rayOrigin = transform.position;
             vertices[0] = Vector3.zero; // same as above, mesh origin is at this transform's position
@@ -107,7 +109,7 @@ namespace Components
 
             int vertexIndex = 1; // 0 is the origin
             int triangleIndex = 0;
-            for (int i = 0; i <= raycount; i++)
+            for (int i = 0; i <= rayCount; i++)
             {
                 Vector3 vertex;
                 if (Physics.Raycast(
@@ -146,7 +148,6 @@ namespace Components
 
                 vertices[vertexIndex] = vertex;
 
-
                 if (i > 0)
                 {
                     triangles[triangleIndex + 0] = 0;
@@ -175,6 +176,7 @@ namespace Components
                 }
             }
         }
+
         Vector3 GetLocalDirectionFromAngle(float angle)
         {
             Quaternion rotationQuat = transform.rotation * Quaternion.AngleAxis(angle, -Vector3.up);
