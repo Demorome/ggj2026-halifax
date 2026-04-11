@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 8196787186169321838}
   - component: {fileID: 3395968128200657930}
   - component: {fileID: 7669997154749213199}
+  - component: {fileID: 983483102203978465}
   m_Layer: 6
   m_Name: cat
   m_TagString: Untagged
@@ -287,6 +288,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e179e56ac6514db3941d614b465c636b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.CanBePosessedComponent
+--- !u!114 &983483102203978465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3646770313445626839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09fd0760bfd14d27b0867c27b92ff56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.CanBeInteractedComponent
+  meshObjectToHighlight: {fileID: 8477382429219006021}
 --- !u!1 &8477382429219006021
 GameObject:
   m_ObjectHideFlags: 0

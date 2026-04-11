@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09fd0760bfd14d27b0867c27b92ff56b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.CanBeInteractedComponent
+  meshObjectToHighlight: {fileID: 5153676870163001590}
 --- !u!114 &7337430032938725416
 MonoBehaviour:
   m_ObjectHideFlags: 0

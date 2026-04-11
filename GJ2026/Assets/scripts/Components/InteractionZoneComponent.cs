@@ -53,15 +53,34 @@ namespace Components
             {
                 if (lastClosestInteractable)
                 {
-                    lastClosestInteractable.GetComponent<Renderer>().material.color = lastColorForClosest;
+                    lastClosestInteractable
+                        .GetComponent<CanBeInteractedComponent>().meshObjectToHighlight
+                        .GetComponent<MeshOutline>().enabled = false;
                 }
                 lastClosestInteractable = closestInteractable;
 
                 if (closestInteractable)
                 {
+                    var canBeInteracted = closestInteractable.GetComponent<CanBeInteractedComponent>();
+
+                    var outline = canBeInteracted.meshObjectToHighlight.GetComponent<MeshOutline>();
+                    if (!outline)
+                    {
+                        outline = canBeInteracted.meshObjectToHighlight.AddComponent<MeshOutline>();
+                        outline.OutlineMode = MeshOutline.Mode.OutlineVisible;
+                        outline.OutlineColor = Color.yellow;
+                        outline.OutlineWidth = 5f;
+                    }
+                    else
+                    {
+                        outline.enabled = true;
+                    }
+
+                    /*
                     var closestInteractableRenderer = closestInteractable.GetComponent<Renderer>();
                     lastColorForClosest = closestInteractableRenderer.material.color;
                     closestInteractableRenderer.material.color = Color.yellow;
+                    */
 
                     Debug.Log("Found new closest interactable: " + closestInteractable);
                 }
