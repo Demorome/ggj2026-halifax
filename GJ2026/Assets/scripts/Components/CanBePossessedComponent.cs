@@ -8,6 +8,7 @@ namespace Components
     /// and tracks if it is currently ready/vulnerable.
     /// </summary>
     [RequireComponent(typeof(HealthComponent))]
+    [RequireComponent(typeof(CanBeInteractedComponent))]
     public class CanBePossessedComponent : MonoBehaviour
     {
         // TODO: Toggle this component as a state in specific situations!

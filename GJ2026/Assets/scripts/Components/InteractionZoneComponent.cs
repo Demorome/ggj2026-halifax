@@ -24,18 +24,21 @@ namespace Components
                 return;
             }
 
+            if (GameManager.Instance.CurrentPlayingState != GameManager.PlayingState.Normal
+                || GameManager.Instance.IsLoading)
+            {
+                return;
+            }
+
             float closestDistanceSquared = float.MaxValue;
             GameObject closestInteractable = null;
 
-            // Backwards loop, for safe mid-loop removal.
-            for (int it = nearbyInteractables.Count - 1; it >= 0; --it)
+            foreach (var interactable in nearbyInteractables)
             {
-                var interactable = nearbyInteractables[it];
-
-                // Remove now-disabled interactables (probably extremely rare).
-                if (!interactable.activeInHierarchy)
+                // If we can't actually interact with this object, ignore it.
+                if (!TryInteraction(interactable, false))
                 {
-                    nearbyInteractables.RemoveAt(it);
+                    continue;
                 }
 
                 var distanceSquared = (interactable.transform.position - transform.position).sqrMagnitude;
@@ -46,11 +49,6 @@ namespace Components
                 }
             }
 
-            if (!closestInteractable)
-            {
-                return;
-            }
-
             if (closestInteractable != lastClosestInteractable)
             {
                 if (lastClosestInteractable)
@@ -59,40 +57,89 @@ namespace Components
                 }
                 lastClosestInteractable = closestInteractable;
 
-                var closestInteractableRenderer =  closestInteractable.GetComponent<Renderer>();
-                lastColorForClosest = closestInteractableRenderer.material.color;
-                closestInteractableRenderer.material.color = Color.yellow;
+                if (closestInteractable)
+                {
+                    var closestInteractableRenderer = closestInteractable.GetComponent<Renderer>();
+                    lastColorForClosest = closestInteractableRenderer.material.color;
+                    closestInteractableRenderer.material.color = Color.yellow;
 
-                Debug.Log("Found new closest interactable: " + closestInteractable);
+                    Debug.Log("Found new closest interactable: " + closestInteractable);
+                }
+                else
+                {
+                    Debug.Log("No interactables are in range anymore");
+                }
             }
 
-            // Only proceed further if player presses the Interact button.
-            if (!Input.GetButtonDown("Interact"))
+            if (closestInteractable && Input.GetButtonDown("Interact"))
             {
-                return;
-            }
-
-            // Actually interact with the closest object,
-            // by checking for components for interaction logic.
-
-            var teleport = closestInteractable.GetComponent<LinkedTeleportComponent>();
-            if (teleport != null)
-            {
-                teleport.Teleport(gameObject);
+                TryInteraction(closestInteractable, true);
             }
         }
 
-        void OnTriggerEnter(Collider other)
+        /// <summary>
+        /// Handles interaction logic, based on components for the source and target.
+        /// </summary>
+        /// <param name="actuallyInteract">If false, interaction logic is disabled.
+        /// Useful for testing if an interaction could be made, i.e. for highlighting.</param>
+        /// <returns>True for success, false for failure.</returns>
+        private bool TryInteraction(GameObject toInteractWith, bool actuallyInteract)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("InteractableObject"))
+            // Ignore now-disabled interactables (probably extremely rare).
+            if (!toInteractWith.activeInHierarchy)
+            {
+                return false;
+            }
+
+            var canBeInteracted = toInteractWith.GetComponent<CanBeInteractedComponent>();
+            if (!canBeInteracted)
+            {
+                return false;
+            }
+
+            // The source of the interaction.
+            var parentObject = transform.parent.gameObject;
+
+            var holeTeleport = toInteractWith.GetComponent<HoleTeleportComponent>();
+            if (holeTeleport && parentObject.GetComponent<CanEnterHolesComponent>())
+            {
+                var teleport = toInteractWith.GetComponent<LinkedTeleportComponent>();
+                if (actuallyInteract)
+                {
+                    teleport.Teleport(parentObject);
+                }
+                return true;
+            }
+
+            var canPossess = parentObject.GetComponent<CanPossessComponent>();
+            if (canPossess && !canPossess.IsPossessingHost)
+            {
+                // Handle possession/host-switching logic.
+                // Host-specific gameplay logic should be handled in separate components.
+                if (toInteractWith.GetComponent<CanBePossessedComponent>())
+                {
+                    if (actuallyInteract)
+                    {
+                        canPossess.TryPossessHost(toInteractWith);
+                    }
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.GetComponent<CanBeInteractedComponent>())
             {
                 nearbyInteractables.Add(other.gameObject);
             }
         }
 
-        void OnTriggerExit(Collider other)
+        private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("InteractableObject"))
+            if (nearbyInteractables.Contains(other.gameObject))
             {
                 nearbyInteractables.Remove(other.gameObject);
             }

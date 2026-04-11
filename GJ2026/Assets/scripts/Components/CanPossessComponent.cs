@@ -67,6 +67,24 @@ namespace Components
             }
         }
 
+        private void Update()
+        {
+            if (GameManager.Instance.CurrentPlayingState != GameManager.PlayingState.Normal
+                || GameManager.Instance.IsLoading)
+            {
+                return;
+            }
+
+            // Handle un-equipping/leaving a host.
+            if (IsPossessingHost)
+            {
+                if (Input.GetButtonDown("Unequip"))
+                {
+                    TryLeaveCurrentHost();
+                }
+            }
+        }
+
         private void OnDestroy()
         {
             // Un-register on-death handler.
@@ -77,45 +95,10 @@ namespace Components
             }
         }
 
-        private void Update()
-        {
-            if (GameManager.Instance.CurrentPlayingState != GameManager.PlayingState.Normal
-                || GameManager.Instance.IsLoading)
-            {
-                return;
-            }
-
-            // Handle possession/host-switching logic.
-            // Host-specific gameplay logic should be handled in separate components.
-            // TODO: Highlight nearby hosts that can be possessed!
-            if (IsPossessingHost)
-            {
-                if (Input.GetKeyDown(KeyCode.X))
-                {
-                    TryLeaveCurrentHost();
-                }
-            }
-            else
-            {
-                if (Input.GetKeyDown(KeyCode.X))
-                {
-                    var maybeNearbyHost = GetClosestAliveHostInRange();
-                    if (maybeNearbyHost)
-                    {
-                        TryPossessHost(maybeNearbyHost.gameObject);
-                    }
-                    else
-                    {
-                        Debug.Log("No nearby hosts to possess.");
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// Won't work if the player already has a host equipped.
         /// </summary>
-        private void TryPossessHost(GameObject targetToPossess)
+        public void TryPossessHost(GameObject targetToPossess)
         {
             if (IsPossessingHost)
             {
@@ -163,7 +146,7 @@ namespace Components
         /// <summary>
         /// Won't work if no host is possessed/equipped.
         /// </summary>
-        private void TryLeaveCurrentHost()
+        public void TryLeaveCurrentHost()
         {
             if (!IsPossessingHost)
             {
@@ -266,7 +249,7 @@ namespace Components
             }
         }
 
-        private CanBePossessedComponent GetClosestAliveHostInRange()
+        /*private CanBePossessedComponent GetClosestAliveHostInRange()
         {
             CanBePossessedComponent closestTarget = null;
             float closestDistance = float.MaxValue;
@@ -299,6 +282,6 @@ namespace Components
             }
 
             return closestTarget;
-        }
+        }*/
     }
 }

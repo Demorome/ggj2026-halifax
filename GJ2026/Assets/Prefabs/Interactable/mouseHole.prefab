@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2196343021578879988}
   - component: {fileID: 7330685005685696220}
   - component: {fileID: 4294271142953627504}
+  - component: {fileID: 2865980910437722528}
+  - component: {fileID: 7337430032938725416}
   m_Layer: 8
   m_Name: mouseHole
   m_TagString: Untagged
@@ -126,3 +128,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5153676870163001590}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2865980910437722528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5153676870163001590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09fd0760bfd14d27b0867c27b92ff56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.CanBeInteractedComponent
+--- !u!114 &7337430032938725416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5153676870163001590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c7e4f0cc3741e1baca2c680c6b609f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.HoleTeleportComponent

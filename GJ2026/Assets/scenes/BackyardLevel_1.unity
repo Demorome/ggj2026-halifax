@@ -2723,7 +2723,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1585447352679769686, guid: 1db86c48d2398b01fb17c6e4ed8ab33e, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
-      value: 256
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 1650764257515459619, guid: 1db86c48d2398b01fb17c6e4ed8ab33e, type: 3}
       propertyPath: m_Layer
