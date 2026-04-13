@@ -12,8 +12,8 @@ namespace Components
         /// </summary>
         public float possessionRange = 25f;
 
-        public event Action OnPlayerEnterHost;
-        public event Action OnPlayerExitHost;
+        public static event Action OnPlayerEnterHost;
+        public static event Action OnPlayerExitHost;
 
         /// <summary>
         /// We're caching this for other game systems to utilize. <br/>
@@ -236,8 +236,6 @@ namespace Components
 
             transferredComponent.defaultPlayerForm = defaultPlayerForm;
             transferredComponent.possessionRange = possessionRange;
-            transferredComponent.OnPlayerEnterHost = OnPlayerEnterHost;
-            transferredComponent.OnPlayerExitHost = OnPlayerExitHost;
 
             if (this.gameObject == defaultPlayerForm.gameObject)
             {

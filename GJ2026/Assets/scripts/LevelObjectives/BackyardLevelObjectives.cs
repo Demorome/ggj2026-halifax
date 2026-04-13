@@ -46,6 +46,16 @@ namespace LevelObjectives
             }
         }
 
+        private void OnPlayerEnterHost()
+        {
+            currentActorType = GetCurrentPlayerActorType();
+        }
+
+        private void OnPlayerExitHost()
+        {
+            currentActorType = ActorType.PlayerMaskWithoutHost;
+        }
+
         private void OnActorTypeChanged(ActorType actorType)
         {
             string objectiveMessage;
@@ -94,6 +104,17 @@ namespace LevelObjectives
             uiText.text = objectiveMsg;
         }
 
+        private ActorType GetCurrentPlayerActorType()
+        {
+            var currentPlayerForm = CanPossessComponent.CurrentPlayerForm;
+            if (!currentPlayerForm)
+            {
+                Debug.LogError("Player-controlled object not found!");
+                return ActorType.Unknown;
+            }
+            return currentPlayerForm.GetComponent<ActorTypeComponent>().actorType;
+        }
+
         private void Start()
         {
             uiDocument = GetComponent<UIDocument>();
@@ -104,16 +125,16 @@ namespace LevelObjectives
                 return;
             }
 
-            var currentPlayerForm = CanPossessComponent.CurrentPlayerForm;
-            if (!currentPlayerForm)
-            {
-                // TODO: Set the objective UI to be an error message.
-                Debug.LogError("Player-controlled object not found!");
-                return;
-            }
-            var actorType = currentPlayerForm.GetComponent<ActorTypeComponent>().actorType;
+            currentActorType = GetCurrentPlayerActorType();
 
-            currentActorType = actorType;
+            CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
+            CanPossessComponent.OnPlayerExitHost += OnPlayerExitHost;
+        }
+
+        private void OnDestroy()
+        {
+            CanPossessComponent.OnPlayerEnterHost -= OnPlayerEnterHost;
+            CanPossessComponent.OnPlayerExitHost -= OnPlayerExitHost;
         }
     }
 }

@@ -7,12 +7,12 @@ namespace Components
     {
         private void Start()
         {
+            CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
+            CanPossessComponent.OnPlayerExitHost += OnPlayerExitHost;
+
             var canPossessComponent = FindAnyObjectByType<CanPossessComponent>();
             if (canPossessComponent)
             {
-                canPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
-                canPossessComponent.OnPlayerExitHost += OnPlayerExitHost;
-
                 if (canPossessComponent.IsPossessingHost)
                 {
                     OnPlayerEnterHost();
@@ -30,12 +30,8 @@ namespace Components
 
         private void OnDestroy()
         {
-            var canPossessComponent = FindAnyObjectByType<CanPossessComponent>();
-            if (canPossessComponent)
-            {
-                canPossessComponent.OnPlayerEnterHost -= OnPlayerEnterHost;
-                canPossessComponent.OnPlayerExitHost -= OnPlayerExitHost;
-            }
+            CanPossessComponent.OnPlayerEnterHost -= OnPlayerEnterHost;
+            CanPossessComponent.OnPlayerExitHost -= OnPlayerExitHost;
         }
 
         private void OnPlayerEnterHost()
