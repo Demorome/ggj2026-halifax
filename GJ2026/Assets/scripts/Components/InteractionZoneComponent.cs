@@ -15,10 +15,15 @@ namespace Components
     {
         private readonly List<GameObject> nearbyInteractables = new();
         private GameObject lastClosestInteractable;
-        private Color lastColorForClosest;
 
         private void FixedUpdate()
         {
+            if (GameManager.Instance.CurrentPlayingState == GameManager.PlayingState.GameOver)
+            {
+                Reset();
+                return;
+            }
+
             if (nearbyInteractables.Count == 0)
             {
                 return;
@@ -29,6 +34,8 @@ namespace Components
             {
                 return;
             }
+
+            //Debug.Log($"List Contents:\n{string.Join("\n", nearbyInteractables)}");
 
             float closestDistanceSquared = float.MaxValue;
             GameObject closestInteractable = null;
@@ -75,12 +82,6 @@ namespace Components
                     {
                         outline.enabled = true;
                     }
-
-                    /*
-                    var closestInteractableRenderer = closestInteractable.GetComponent<Renderer>();
-                    lastColorForClosest = closestInteractableRenderer.material.color;
-                    closestInteractableRenderer.material.color = Color.yellow;
-                    */
 
                     Debug.Log("Found new closest interactable: " + closestInteractable);
                 }
@@ -161,16 +162,31 @@ namespace Components
             if (nearbyInteractables.Contains(other.gameObject))
             {
                 nearbyInteractables.Remove(other.gameObject);
+
+                if (other.gameObject == lastClosestInteractable)
+                {
+                    ResetLastClosestInteractable();
+
+                    //Debug.Log("Left interaction distance");
+                }
+            }
+        }
+
+        private void ResetLastClosestInteractable()
+        {
+            if (lastClosestInteractable)
+            {
+                lastClosestInteractable
+                    .GetComponent<CanBeInteractedComponent>().meshObjectToHighlight
+                    .GetComponent<MeshOutline>().enabled = false;
+
+                lastClosestInteractable = null;
             }
         }
 
         public void Reset()
         {
-            if (lastClosestInteractable)
-            {
-                lastClosestInteractable.GetComponent<Renderer>().material.color = lastColorForClosest;
-            }
-            lastClosestInteractable = null;
+            ResetLastClosestInteractable();
 
             // TODO: Might need to force a re-calculation for OnTriggerEnter, to re-populate this?
             nearbyInteractables.Clear();
