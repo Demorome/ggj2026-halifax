@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
+using Components;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     public UIDocument UIDoc;
     private VisualElement playerHostHealthMeter;
     private VisualElement playerFinalHealthMeter;
+    private VisualElement playerHostHealthBarFill;
 
     // Global game data
     // TODO: Completed levels? High-scores for each level?
@@ -61,10 +63,14 @@ public class GameManager : MonoBehaviour
 
             playerHostHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
             playerFinalHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
-            if (playerHostHealthMeter == null || playerFinalHealthMeter == null)
+            playerHostHealthBarFill = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarFill");
+            if (playerHostHealthMeter == null || playerFinalHealthMeter == null
+                || playerHostHealthBarFill == null)
             {
-                Debug.LogError("No health label found!");
+                Debug.LogError("Couldn't find certain health UI elements!");
             }
+
+            CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
         }
         // If instance already exists, destroy this duplicate
         else
@@ -72,6 +78,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+
+    private void OnPlayerEnterHost()
+    {
+        var actorType = CanPossessComponent.GetCurrentPlayerActorType();
+        var color = ActorTypeComponent.ColorForActorType(actorType);
+        playerHostHealthBarFill.style.unityBackgroundImageTintColor = color;
     }
 
     // Method to add score (callable from anywhere)

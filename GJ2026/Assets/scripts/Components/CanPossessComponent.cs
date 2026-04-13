@@ -23,6 +23,16 @@ namespace Components
         /// </summary>
         public static GameObject CurrentPlayerForm { get; private set; }
 
+        public static ActorType GetCurrentPlayerActorType()
+        {
+            if (!CurrentPlayerForm)
+            {
+                Debug.LogError("Player-controlled object not found!");
+                return ActorType.Unknown;
+            }
+            return CurrentPlayerForm.GetComponent<ActorTypeComponent>().actorType;
+        }
+
         /// <summary>
         /// The form to revert to once no longer possessing anyone. <br/>
         /// This object will be disabled when the player enters a host. <br/>

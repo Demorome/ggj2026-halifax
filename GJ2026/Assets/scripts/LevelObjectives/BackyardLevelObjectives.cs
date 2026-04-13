@@ -48,7 +48,7 @@ namespace LevelObjectives
 
         private void OnPlayerEnterHost()
         {
-            currentActorType = GetCurrentPlayerActorType();
+            currentActorType = CanPossessComponent.GetCurrentPlayerActorType();
         }
 
         private void OnPlayerExitHost()
@@ -98,21 +98,10 @@ namespace LevelObjectives
             UpdateObjectiveUIString(objectiveMessage);
         }
 
-        // TODO!!!!!!!!!!!!!!!!!!!!!!
+        // TODO: Add objective counter + image for item to collect UI!
         private void UpdateObjectiveUIString(string objectiveMsg)
         {
             uiText.text = objectiveMsg;
-        }
-
-        private ActorType GetCurrentPlayerActorType()
-        {
-            var currentPlayerForm = CanPossessComponent.CurrentPlayerForm;
-            if (!currentPlayerForm)
-            {
-                Debug.LogError("Player-controlled object not found!");
-                return ActorType.Unknown;
-            }
-            return currentPlayerForm.GetComponent<ActorTypeComponent>().actorType;
         }
 
         private void Start()
@@ -125,7 +114,7 @@ namespace LevelObjectives
                 return;
             }
 
-            currentActorType = GetCurrentPlayerActorType();
+            currentActorType = CanPossessComponent.GetCurrentPlayerActorType();
 
             CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
             CanPossessComponent.OnPlayerExitHost += OnPlayerExitHost;
