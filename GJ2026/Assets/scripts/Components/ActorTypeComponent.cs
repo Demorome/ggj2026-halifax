@@ -22,7 +22,7 @@ namespace Components
     {
         private static readonly Dictionary<ActorType, Color> ActorUIColors = new()
         {
-            { ActorType.PlayerMaskWithoutHost, Color.darkTurquoise },
+            { ActorType.PlayerMaskWithoutHost, Color.royalBlue },
             { ActorType.Mouse, Color.yellow },
             { ActorType.Cat, Color.brown },
             { ActorType.Dog, Color.orangeRed },

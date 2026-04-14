@@ -95,13 +95,16 @@ namespace LevelObjectives
                 objectiveMessage = "ERROR: Unknown objective!";
             }
 
-            UpdateObjectiveUIString(objectiveMessage);
+            var uiColor = ActorTypeComponent.ColorForActorType(actorType);
+
+            UpdateObjectiveUI(objectiveMessage, uiColor);
         }
 
         // TODO: Add objective counter + image for item to collect UI!
-        private void UpdateObjectiveUIString(string objectiveMsg)
+        private void UpdateObjectiveUI(string objectiveMsg, Color color)
         {
             uiText.text = objectiveMsg;
+            uiText.style.color = color;
         }
 
         private void Start()
