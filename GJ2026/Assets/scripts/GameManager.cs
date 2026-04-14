@@ -102,6 +102,10 @@ public class GameManager : MonoBehaviour
     {
         InteractionText.text = newText;
     }
+    public void ChangeInteractionTextColor(Color newColor)
+    {
+        InteractionText.color = newColor;
+    }
 
     private void OnPlayerEnterHost()
     {

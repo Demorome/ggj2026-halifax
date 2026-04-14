@@ -69,6 +69,7 @@ namespace Components
 
                 if (closestInteractable)
                 {
+                    var interactionColor = GetInteractionColor(transform.parent.gameObject);
                     var canBeInteracted = closestInteractable.GetComponent<CanBeInteractedComponent>();
 
                     var outline = canBeInteracted.meshObjectToHighlight.GetComponent<MeshOutline>();
@@ -76,7 +77,7 @@ namespace Components
                     {
                         outline = canBeInteracted.meshObjectToHighlight.AddComponent<MeshOutline>();
                         outline.OutlineMode = MeshOutline.Mode.OutlineVisible;
-                        outline.OutlineColor = Color.yellow;
+                        outline.OutlineColor = interactionColor;
                         outline.OutlineWidth = 5f;
                     }
                     else
@@ -88,6 +89,7 @@ namespace Components
                     textCanvas.SetActive(true);
 
                     GameManager.Instance.ChangeInteractionText(canBeInteracted.interactionMessage);
+                    GameManager.Instance.ChangeInteractionTextColor(interactionColor);
 
                     Debug.Log("Found new closest interactable: " + closestInteractable);
                 }
@@ -104,6 +106,16 @@ namespace Components
             {
                 TryInteraction(closestInteractable, true);
             }
+        }
+
+        private static Color GetInteractionColor(GameObject parentObj)
+        {
+            var actorTypeComponent = parentObj.GetComponent<ActorTypeComponent>();
+            if (actorTypeComponent)
+            {
+                return actorTypeComponent.ActorUIColor;
+            }
+            return Color.yellow;
         }
 
         private static Vector3 GetInteractionTextPosition(GameObject interactable)

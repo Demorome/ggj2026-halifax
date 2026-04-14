@@ -35,6 +35,8 @@ namespace Components
             return ActorUIColors[type];
         }
 
+        public Color ActorUIColor => ColorForActorType(actorType);
+
         /// <summary>
         /// WARNING: Should rarely be changed, unless it's the player changing form!
         /// </summary>
