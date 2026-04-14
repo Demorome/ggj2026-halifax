@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using Components;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -30,6 +31,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject PauseScreenPrefab;
     private GameObject PauseScreen;
+
+    public GameObject InteractionTextCanvasPrefab;
+    private static GameObject InteractionTextCanvas;
+    private static TMP_Text InteractionText;
 
     public UIDocument UIDoc;
     private VisualElement playerHostHealthMeter;
@@ -64,13 +69,21 @@ public class GameManager : MonoBehaviour
             playerHostHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
             playerFinalHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
             playerHostHealthBarFill = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarFill");
-            if (playerHostHealthMeter == null || playerFinalHealthMeter == null
-                || playerHostHealthBarFill == null)
-            {
-                Debug.LogError("Couldn't find certain health UI elements!");
-            }
+            Debug.Assert(playerHostHealthMeter != null && playerFinalHealthMeter != null
+                                                       && playerHostHealthBarFill != null);
 
             CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
+
+            InteractionTextCanvas = Instantiate(InteractionTextCanvasPrefab);
+            DontDestroyOnLoad(InteractionTextCanvas);
+            var textChild = InteractionTextCanvas
+                .transform
+                .GetChild(0);
+            Debug.Assert(textChild);
+            InteractionText = textChild.gameObject.GetComponent<TMP_Text>(); 
+            Debug.Assert(InteractionText);
+
+            InteractionTextCanvas.SetActive(false);
         }
         // If instance already exists, destroy this duplicate
         else
@@ -78,6 +91,16 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+
+    public GameObject GetInteractionCanvas()
+    {
+        return InteractionTextCanvas;
+    }
+
+    public void ChangeInteractionText(string newText)
+    {
+        InteractionText.text = newText;
     }
 
     private void OnPlayerEnterHost()

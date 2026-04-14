@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   GameOverScreenPrefab: {fileID: 7443788210750990300, guid: 666e394efe7afb6789adf666b042bddc, type: 3}
   PauseScreenPrefab: {fileID: 0}
+  InteractionTextCanvasPrefab: {fileID: 2699263397800788877, guid: 4441640ca087205c594235a0cf5c1f95, type: 3}
   UIDoc: {fileID: 8963169251722788064}
 --- !u!1 &5512071012007324637
 GameObject:

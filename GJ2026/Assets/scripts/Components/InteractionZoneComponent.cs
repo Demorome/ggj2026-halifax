@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -83,10 +84,18 @@ namespace Components
                         outline.enabled = true;
                     }
 
+                    var textCanvas = GameManager.Instance.GetInteractionCanvas();
+                    textCanvas.SetActive(true);
+
+                    GameManager.Instance.ChangeInteractionText(canBeInteracted.interactionMessage);
+
                     Debug.Log("Found new closest interactable: " + closestInteractable);
                 }
                 else
                 {
+                    var textCanvas = GameManager.Instance.GetInteractionCanvas();
+                    textCanvas.SetActive(false);
+                    textCanvas.transform.position = GetInteractionTextPosition(lastClosestInteractable);
                     Debug.Log("No interactables are in range anymore");
                 }
             }
@@ -94,6 +103,29 @@ namespace Components
             if (closestInteractable && Input.GetButtonDown("Interact"))
             {
                 TryInteraction(closestInteractable, true);
+            }
+        }
+
+        private static Vector3 GetInteractionTextPosition(GameObject interactable)
+        {
+            var pos = interactable.transform.position;
+            var collider = interactable.GetComponent<Collider>();
+            var halfYHeight = collider.bounds.size.y / 2; 
+
+            return new Vector3(
+                pos.x,
+                // Go a bit above the center-top.
+                pos.y + halfYHeight + 1,
+                pos.z
+            );
+        }
+
+        private void LateUpdate()
+        {
+            if (lastClosestInteractable)
+            {
+                var textCanvas = GameManager.Instance.GetInteractionCanvas();
+                textCanvas.transform.position = GetInteractionTextPosition(lastClosestInteractable);
             }
         }
 
@@ -181,6 +213,9 @@ namespace Components
                     .GetComponent<MeshOutline>().enabled = false;
 
                 lastClosestInteractable = null;
+
+                var textCanvas = GameManager.Instance.GetInteractionCanvas();
+                textCanvas.SetActive(false);
             }
         }
 
