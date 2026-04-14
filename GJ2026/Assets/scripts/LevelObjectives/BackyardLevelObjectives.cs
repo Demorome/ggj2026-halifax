@@ -4,20 +4,16 @@ using UnityEngine.UIElements;
 
 namespace LevelObjectives
 {
+    // TODO: Update the UI whenever an objective is progressing!
+
     // Sets the script to be executed later than all default scripts
     // This is helpful for UI, since other things may need to be initialized before setting the UI
     [DefaultExecutionOrder(1000)]
     public class BackyardLevelObjectives : MonoBehaviour
     {
-        private UIDocument uiDocument;
-        private TextElement uiText;
-
-        /// <summary>
-        /// Can be 0, to represent a boolean objective
-        /// which doesn't require point accumulation.
-        /// </summary>
-        private int progressRequired;
-        private int currentProgress;
+        // TODO: Create objective array, store current objective index.
+        // TODO: This will let us query + increment current objective progress.
+        //private int currentObjective = ????;
 
         private int currentCollectedCheese = 0;
         [SerializeField]
@@ -59,6 +55,12 @@ namespace LevelObjectives
         private void OnActorTypeChanged(ActorType actorType)
         {
             string objectiveMessage;
+            string objectiveEmojiIcon = null;
+
+            // Only used if EmojiIcon isn't null.
+            int progressRequired = -99999;
+            int currentProgress = -99999;
+
             if (actorType == ActorType.PlayerMaskWithoutHost)
             {
                 objectiveMessage = "Return home without killing any host!";
@@ -66,12 +68,14 @@ namespace LevelObjectives
             else if (actorType == ActorType.Mouse)
             {
                 objectiveMessage = "Collect cheese!";
+                objectiveEmojiIcon = "🧀";
                 progressRequired = requiredCollectedCheese;
                 currentProgress = currentCollectedCheese;
             }
             else if (actorType == ActorType.Cat)
             {
                 objectiveMessage = "Steal the dog's bone!";
+                objectiveEmojiIcon = "🦴";
                 progressRequired = requiredCollectedDogBones;
                 currentProgress = currentCollectedDogBones;
 
@@ -83,10 +87,14 @@ namespace LevelObjectives
 
                 if (currentProgress >= requiredIntrudersRepelled)
                 {
+                    objectiveEmojiIcon = "🏡";
+                    currentProgress = 0;
+                    progressRequired = 0;
                     objectiveMessage = "Enter the house!";
                 }
                 else
                 {
+                    objectiveEmojiIcon = "🐭";
                     objectiveMessage = "Repel intruders from the house!";
                 }
             }
@@ -95,28 +103,44 @@ namespace LevelObjectives
                 objectiveMessage = "ERROR: Unknown objective!";
             }
 
+            string progressMessage = null;
+            if (objectiveEmojiIcon != null)
+            {
+                if (progressRequired != 0)
+                {
+                    progressMessage = $"{currentProgress}/{progressRequired}";
+                }
+                else
+                {
+                    progressMessage = string.Empty;
+                }
+            }
+
             var uiColor = ActorTypeComponent.ColorForActorType(actorType);
 
-            UpdateObjectiveUI(objectiveMessage, uiColor);
+            GameManager.Instance.ChangeObjective(
+                objectiveMessage,
+                uiColor,
+                objectiveEmojiIcon,
+                progressMessage
+            );
         }
 
-        // TODO: Add objective counter + image for item to collect UI!
-        private void UpdateObjectiveUI(string objectiveMsg, Color color)
+        public void IncrementCheeseProgress()
         {
-            uiText.text = objectiveMsg;
-            uiText.style.color = color;
+
+        }
+        public void IncrementBoneProgress()
+        {
+
+        }
+        public void IncrementIntrudersProgress()
+        {
+
         }
 
         private void Start()
         {
-            uiDocument = GetComponent<UIDocument>();
-            uiText = uiDocument.rootVisualElement.Q<TextElement>("Objective");
-            if (uiText == null)
-            {
-                Debug.LogError("Objective UI Text not found!");
-                return;
-            }
-
             currentActorType = CanPossessComponent.GetCurrentPlayerActorType();
 
             CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;

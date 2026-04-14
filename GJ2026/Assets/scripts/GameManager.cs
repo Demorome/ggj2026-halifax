@@ -36,10 +36,16 @@ public class GameManager : MonoBehaviour
     private static GameObject InteractionTextCanvas;
     private static TMP_Text InteractionText;
 
-    public UIDocument UIDoc;
+    public UIDocument healthUIDoc;
     private VisualElement playerHostHealthMeter;
     private VisualElement playerFinalHealthMeter;
     private VisualElement playerHostHealthBarFill;
+
+    public UIDocument objectivesUIDoc;
+    private VisualElement objectiveProgressContainer;
+    private TextElement objectiveMessageElement;
+    private TextElement objectiveProgressElement;
+    private TextElement objectiveEmojiIconElement;
 
     // Global game data
     // TODO: Completed levels? High-scores for each level?
@@ -66,11 +72,18 @@ public class GameManager : MonoBehaviour
                 CurrentPlayingState = PlayingState.Normal;
             }
 
-            playerHostHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
-            playerFinalHealthMeter = UIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
-            playerHostHealthBarFill = UIDoc.rootVisualElement.Q<VisualElement>("HealthBarFill");
+            playerHostHealthMeter = healthUIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
+            playerFinalHealthMeter = healthUIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
+            playerHostHealthBarFill = healthUIDoc.rootVisualElement.Q<VisualElement>("HealthBarFill");
             Debug.Assert(playerHostHealthMeter != null && playerFinalHealthMeter != null
                                                        && playerHostHealthBarFill != null);
+
+            objectiveMessageElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("Objective");
+            objectiveProgressContainer = objectivesUIDoc.rootVisualElement.Q<VisualElement>("Progress");
+            objectiveProgressElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("ProgressText");
+            objectiveEmojiIconElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("ObjectiveEmoji");
+            Debug.Assert(objectiveMessageElement != null && objectiveProgressElement != null
+                                                         && objectiveEmojiIconElement != null);
 
             CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
 
@@ -91,6 +104,56 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+
+    public bool IsObjectiveUIHidden()
+    {
+        return objectivesUIDoc.rootVisualElement.style.display == DisplayStyle.None;
+    }
+
+    public void HideObjectiveUI()
+    {
+        objectivesUIDoc.rootVisualElement.style.display = DisplayStyle.None;
+    }
+
+    public void ShowObjectiveUI()
+    {
+        objectivesUIDoc.rootVisualElement.style.display = DisplayStyle.Flex;
+    }
+
+    public void ChangeObjective(string newMessage, Color color, string newEmojiIcon, string newProgress)
+    {
+        if (IsObjectiveUIHidden())
+        {
+            Debug.Log("ChangeObjective: Un-hid the objective UI.");
+            ShowObjectiveUI();
+        }
+
+        objectiveMessageElement.text = newMessage;
+        objectiveMessageElement.style.color = color;
+
+        if (newEmojiIcon != null)
+        {
+            objectiveProgressContainer.visible = true;
+            objectiveEmojiIconElement.text = newEmojiIcon;
+            UpdateObjectiveProgress(newProgress);
+            objectiveProgressElement.style.color = color;
+        }
+        else
+        {
+            objectiveProgressContainer.visible = false;
+        }
+
+    }
+
+    public void UpdateObjectiveProgress(string newProgress)
+    {
+        if (!objectiveProgressContainer.visible)
+        {
+            Debug.LogError("Objective progress not visible; why update it?");
+        }
+
+        objectiveProgressElement.text = newProgress;
     }
 
     public GameObject GetInteractionCanvas()
