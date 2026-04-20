@@ -101,8 +101,18 @@ namespace Components
             float closestDistanceSquared = float.MaxValue;
             GameObject closestInteractable = null;
 
-            foreach (var interactable in nearbyInteractables)
+            // Backwards loop, for safe removal during iteration.
+            for (int i = nearbyInteractables.Count - 1; i >= 0; i--)
             {
+                var interactable = nearbyInteractables[i];
+
+                // Detect now-destroyed objects.
+                if (interactable == null)
+                {
+                    nearbyInteractables.RemoveAt(i);
+                    continue;
+                }
+
                 // If we can't actually interact with this object, ignore it.
                 if (!TryInteraction(interactable, false))
                 {
@@ -164,7 +174,12 @@ namespace Components
 
             if (closestInteractable && Input.GetButtonDown("Interact"))
             {
-                TryInteraction(closestInteractable, true);
+                if (TryInteraction(closestInteractable, true))
+                {
+                    // Just in case, such as if the interaction resulted in
+                    // the source being deleted.
+                    ResetLastClosestInteractable();
+                }
             }
         }
 
