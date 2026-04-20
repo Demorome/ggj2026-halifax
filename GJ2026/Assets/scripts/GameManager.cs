@@ -8,12 +8,43 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
+public enum ObjectiveType
+{
+    None,
+    DefaultPlayerObjective,
+    CollectCheese,
+    StealBone,
+    RepelIntruders
+}
+
 // Credits to this for the baseline:
 // https://uhiyama-lab.com/en/notes/unity/unity-gameloop-gamemanager-pattern-guide/
 public class GameManager : MonoBehaviour
 {
     // Static field holding the singleton instance
-    public static GameManager Instance { get; private set; }
+    // Credits to this for the thread-safe singleton pattern implementation:
+    // https://dev.to/devsdaddy/everything-you-need-to-know-about-singleton-in-c-and-unity-n40
+    public static GameManager Instance => Nested.Source;
+
+    private static class Nested
+    {
+        static Nested(){}
+        internal static readonly GameManager Source = CreateSingleton();
+
+        private static GameManager CreateSingleton()
+        {
+            GameObject instance = Instantiate(
+                (GameObject)Resources.Load(
+                    "Managers/GameManager",
+                    typeof(GameObject))
+                );
+
+            DontDestroyOnLoad(instance);
+            var manager = instance.GetComponent<GameManager>();
+            Debug.Assert(instance != null && manager != null);
+            return manager;
+        }
+    }
 
     // Enum defining game states
     public enum GameState { MainMenu, Playing }
@@ -25,6 +56,29 @@ public class GameManager : MonoBehaviour
 
     public PlayingState CurrentPlayingState { get; private set; }
         = PlayingState.None;
+
+    public ObjectiveType CurrentObjectiveType { get; private set; }
+
+    public event Action<ObjectiveType> OnCurrentObjectiveChanged;
+    public event Action<ObjectiveType> OnIncrementObjectiveProgressSignal;
+
+    public bool ChangeCurrentObjective(ObjectiveType newType)
+    {
+        if (newType == CurrentObjectiveType)
+        {
+            return false;
+        }
+
+        var oldType = CurrentObjectiveType;
+        CurrentObjectiveType = newType;
+        OnCurrentObjectiveChanged?.Invoke(oldType);
+        return true;
+    }
+
+    public void SendIncrementObjectiveProgressSignal(ObjectiveType type)
+    {
+        OnIncrementObjectiveProgressSignal?.Invoke(type);
+    }
 
     public GameObject GameOverScreenPrefab;
     private GameObject GameOverScreen;
@@ -52,58 +106,45 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton pattern implementation
-        // If no instance exists, set this as the singleton
-        if (Instance == null)
+        Debug.Log("RnanaanN!N!");
+
+        // Set event handlers
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        var currentSceneID = SceneManager.GetActiveScene().buildIndex;
+
+        // Set initial state
+        if (currentSceneID != 0)
         {
-            Instance = this;
-            // Persist this object across scene loads
-            DontDestroyOnLoad(gameObject);
-
-            // Set event handlers
-            SceneManager.sceneLoaded += OnSceneLoaded;
-
-            var currentSceneID = SceneManager.GetActiveScene().buildIndex;
-
-            // Set initial state
-            if (currentSceneID != 0)
-            {
-                CurrentGameState = GameState.Playing;
-                CurrentPlayingState = PlayingState.Normal;
-            }
-
-            playerHostHealthMeter = healthUIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
-            playerFinalHealthMeter = healthUIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
-            playerHostHealthBarFill = healthUIDoc.rootVisualElement.Q<VisualElement>("HealthBarFill");
-            Debug.Assert(playerHostHealthMeter != null && playerFinalHealthMeter != null
-                                                       && playerHostHealthBarFill != null);
-
-            objectiveMessageElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("Objective");
-            objectiveProgressContainer = objectivesUIDoc.rootVisualElement.Q<VisualElement>("Progress");
-            objectiveProgressElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("ProgressText");
-            objectiveEmojiIconElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("ObjectiveEmoji");
-            Debug.Assert(objectiveMessageElement != null && objectiveProgressElement != null
-                                                         && objectiveEmojiIconElement != null);
-
-            CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
-
-            InteractionTextCanvas = Instantiate(InteractionTextCanvasPrefab);
-            DontDestroyOnLoad(InteractionTextCanvas);
-            var textChild = InteractionTextCanvas
-                .transform
-                .GetChild(0);
-            Debug.Assert(textChild);
-            InteractionText = textChild.gameObject.GetComponent<TMP_Text>(); 
-            Debug.Assert(InteractionText);
-
-            InteractionTextCanvas.SetActive(false);
+            CurrentGameState = GameState.Playing;
+            CurrentPlayingState = PlayingState.Normal;
         }
-        // If instance already exists, destroy this duplicate
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+
+        playerHostHealthMeter = healthUIDoc.rootVisualElement.Q<VisualElement>("HealthBarMask");
+        playerFinalHealthMeter = healthUIDoc.rootVisualElement.Q<VisualElement>("FinalHealthBarMask");
+        playerHostHealthBarFill = healthUIDoc.rootVisualElement.Q<VisualElement>("HealthBarFill");
+        Debug.Assert(playerHostHealthMeter != null && playerFinalHealthMeter != null
+                                                   && playerHostHealthBarFill != null);
+
+        objectiveMessageElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("Objective");
+        objectiveProgressContainer = objectivesUIDoc.rootVisualElement.Q<VisualElement>("Progress");
+        objectiveProgressElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("ProgressText");
+        objectiveEmojiIconElement = objectivesUIDoc.rootVisualElement.Q<TextElement>("ObjectiveEmoji");
+        Debug.Assert(objectiveMessageElement != null && objectiveProgressElement != null
+                                                     && objectiveEmojiIconElement != null);
+
+        CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
+
+        InteractionTextCanvas = Instantiate(InteractionTextCanvasPrefab);
+        DontDestroyOnLoad(InteractionTextCanvas);
+        var textChild = InteractionTextCanvas
+            .transform
+            .GetChild(0);
+        Debug.Assert(textChild);
+        InteractionText = textChild.gameObject.GetComponent<TMP_Text>();
+        Debug.Assert(InteractionText);
+
+        InteractionTextCanvas.SetActive(false);
     }
 
     public bool IsObjectiveUIHidden()
@@ -121,7 +162,7 @@ public class GameManager : MonoBehaviour
         objectivesUIDoc.rootVisualElement.style.display = DisplayStyle.Flex;
     }
 
-    public void ChangeObjective(string newMessage, Color color, string newEmojiIcon, string newProgress)
+    public void ChangeObjectiveUI(string newMessage, Color color, string newEmojiIcon, string newProgress)
     {
         if (IsObjectiveUIHidden())
         {
@@ -136,7 +177,7 @@ public class GameManager : MonoBehaviour
         {
             objectiveProgressContainer.visible = true;
             objectiveEmojiIconElement.text = newEmojiIcon;
-            UpdateObjectiveProgress(newProgress);
+            objectiveProgressElement.text = newProgress;
             objectiveProgressElement.style.color = color;
         }
         else
@@ -146,14 +187,17 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void UpdateObjectiveProgress(string newProgress)
+    public void UpdateObjectiveProgress(ObjectiveType type, string newProgressText)
     {
         if (!objectiveProgressContainer.visible)
         {
             Debug.LogError("Objective progress not visible; why update it?");
         }
 
-        objectiveProgressElement.text = newProgress;
+        if (type == CurrentObjectiveType)
+        {
+            objectiveProgressElement.text = newProgressText;
+        }
     }
 
     public GameObject GetInteractionCanvas()
@@ -383,12 +427,9 @@ public class GameManager : MonoBehaviour
 
     public void ShowLevelCompleteScreen()
     {
+        //TODO: Implement!
         //SceneManager.SetActiveScene();
     }
-
-    // Example calls from other scripts:
-    // GameManager.Instance.AddScore(100);
-    // GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
 
     public void UpdatePlayerFinalHealthUI(float currentHealth, float maxHealth)
     {

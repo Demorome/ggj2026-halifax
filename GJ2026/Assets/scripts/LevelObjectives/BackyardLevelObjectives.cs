@@ -1,33 +1,15 @@
+using System.Collections.Generic;
 using Components;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace LevelObjectives
 {
-    // TODO: Update the UI whenever an objective is progressing!
-
     // Sets the script to be executed later than all default scripts
     // This is helpful for UI, since other things may need to be initialized before setting the UI
     [DefaultExecutionOrder(1000)]
     public class BackyardLevelObjectives : MonoBehaviour
     {
-        // TODO: Create objective array, store current objective index.
-        // TODO: This will let us query + increment current objective progress.
-        //private int currentObjective = ????;
-
-        private int currentCollectedCheese = 0;
-        [SerializeField]
-        private int requiredCollectedCheese = 3;
-
-        private int currentCollectedDogBones = 0;
-        [SerializeField]
-        private int requiredCollectedDogBones = 1;
-
-        private int currentIntrudersRepelled = 0;
-        [SerializeField]
-        private int requiredIntrudersRepelled = 3;
-
-
         private ActorType _currentActorType = ActorType.Unknown;
         private ActorType currentActorType
         {
@@ -42,6 +24,8 @@ namespace LevelObjectives
             }
         }
 
+        private GameManager _gameManager;
+
         private void OnPlayerEnterHost()
         {
             currentActorType = CanPossessComponent.GetCurrentPlayerActorType();
@@ -54,101 +38,93 @@ namespace LevelObjectives
 
         private void OnActorTypeChanged(ActorType actorType)
         {
-            string objectiveMessage;
-            string objectiveEmojiIcon = null;
-
-            // Only used if EmojiIcon isn't null.
-            int progressRequired = -99999;
-            int currentProgress = -99999;
-
-            if (actorType == ActorType.PlayerMaskWithoutHost)
+            ObjectiveType objectiveType;
+            switch (actorType)
             {
-                objectiveMessage = "Return home without killing any host!";
-            }
-            else if (actorType == ActorType.Mouse)
-            {
-                objectiveMessage = "Collect cheese!";
-                objectiveEmojiIcon = "🧀";
-                progressRequired = requiredCollectedCheese;
-                currentProgress = currentCollectedCheese;
-            }
-            else if (actorType == ActorType.Cat)
-            {
-                objectiveMessage = "Steal the dog's bone!";
-                objectiveEmojiIcon = "🦴";
-                progressRequired = requiredCollectedDogBones;
-                currentProgress = currentCollectedDogBones;
-
-            }
-            else if (actorType == ActorType.Dog)
-            {
-                progressRequired = requiredIntrudersRepelled;
-                currentProgress = currentIntrudersRepelled;
-
-                if (currentProgress >= requiredIntrudersRepelled)
-                {
-                    objectiveEmojiIcon = "🏡";
-                    currentProgress = 0;
-                    progressRequired = 0;
-                    objectiveMessage = "Enter the house!";
-                }
-                else
-                {
-                    objectiveEmojiIcon = "🐭";
-                    objectiveMessage = "Repel intruders from the house!";
-                }
-            }
-            else
-            {
-                objectiveMessage = "ERROR: Unknown objective!";
+                case ActorType.PlayerMaskWithoutHost:
+                    objectiveType = ObjectiveType.DefaultPlayerObjective;
+                    break;
+                case ActorType.Mouse:
+                    objectiveType = ObjectiveType.CollectCheese;
+                    break;
+                case ActorType.Cat:
+                    objectiveType = ObjectiveType.StealBone;
+                    break;
+                case ActorType.Dog:
+                    objectiveType = ObjectiveType.RepelIntruders;
+                    break;
+                default:
+                    Debug.LogError($"Unknown ActorType: {actorType}");
+                    return;
             }
 
-            string progressMessage = null;
-            if (objectiveEmojiIcon != null)
-            {
-                if (progressRequired != 0)
-                {
-                    progressMessage = $"{currentProgress}/{progressRequired}";
-                }
-                else
-                {
-                    progressMessage = string.Empty;
-                }
-            }
+            var objectiveInfo = objectives[objectiveType];
+            Debug.Assert(_gameManager != null);
+            _gameManager.ChangeCurrentObjective(objectiveType);
 
             var uiColor = ActorTypeComponent.ColorForActorType(actorType);
 
-            GameManager.Instance.ChangeObjective(
-                objectiveMessage,
+            _gameManager.ChangeObjectiveUI(
+                objectiveInfo.GetCurrentMessage(),
                 uiColor,
-                objectiveEmojiIcon,
-                progressMessage
+                objectiveInfo.GetCurrentEmoji(),
+                objectiveInfo.GetProgressText()
             );
         }
 
-        public void IncrementCheeseProgress()
+        private readonly Dictionary<ObjectiveType, LevelObjective> objectives = new()
         {
+            { ObjectiveType.DefaultPlayerObjective,
+                new("Return home without killing any host!", null,
+                    null, null,
+                    0)
+            },
+            { ObjectiveType.CollectCheese,
+                new("Collect cheese!", "🧀",
+                    "Trick the cat!", "😾",
+                    5)
+            },
+            { ObjectiveType.StealBone,
+                new("Steal the dog's bone!", "🦴",
+                    "Trick the dog!", "🐶",
+                    1)
+            },
+            { ObjectiveType.RepelIntruders,
+                new("Repel intruders!", "🐭",
+                    "Enter the house!", "🏡",
+                    3)
+            },
+        };
 
-        }
-        public void IncrementBoneProgress()
+        private void OnIncrementChallengeSignal(ObjectiveType objectiveType)
         {
-
-        }
-        public void IncrementIntrudersProgress()
-        {
-
+            if (objectives.TryGetValue(objectiveType, out var objectiveInfo))
+            {
+                objectiveInfo.IncrementProgress();
+                _gameManager.UpdateObjectiveProgress(objectiveType, objectiveInfo.GetProgressText());
+            }
+            else
+            {
+                Debug.LogError("Unknown objective type: " + objectiveType);
+            }
         }
 
         private void Start()
         {
-            currentActorType = CanPossessComponent.GetCurrentPlayerActorType();
+            _gameManager = GameManager.Instance;
+            _gameManager.OnIncrementObjectiveProgressSignal += OnIncrementChallengeSignal;
 
             CanPossessComponent.OnPlayerEnterHost += OnPlayerEnterHost;
             CanPossessComponent.OnPlayerExitHost += OnPlayerExitHost;
+
+            currentActorType = CanPossessComponent.GetCurrentPlayerActorType();
+
         }
 
         private void OnDestroy()
         {
+            _gameManager.OnIncrementObjectiveProgressSignal -= OnIncrementChallengeSignal;
+
             CanPossessComponent.OnPlayerEnterHost -= OnPlayerEnterHost;
             CanPossessComponent.OnPlayerExitHost -= OnPlayerExitHost;
         }
