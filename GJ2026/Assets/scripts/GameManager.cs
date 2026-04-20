@@ -162,7 +162,8 @@ public class GameManager : MonoBehaviour
         objectivesUIDoc.rootVisualElement.style.display = DisplayStyle.Flex;
     }
 
-    public void ChangeObjectiveUI(string newMessage, Color color, string newEmojiIcon, string newProgress)
+    public void ChangeObjectiveUI(string newMessage, string newEmojiIcon, string newProgress,
+        Color? color)
     {
         if (IsObjectiveUIHidden())
         {
@@ -171,14 +172,20 @@ public class GameManager : MonoBehaviour
         }
 
         objectiveMessageElement.text = newMessage;
-        objectiveMessageElement.style.color = color;
+        if (color.HasValue)
+        {
+            objectiveMessageElement.style.color = color.Value;
+        }
 
         if (newEmojiIcon != null)
         {
             objectiveProgressContainer.visible = true;
             objectiveEmojiIconElement.text = newEmojiIcon;
             objectiveProgressElement.text = newProgress;
-            objectiveProgressElement.style.color = color;
+            if (color.HasValue)
+            {
+                objectiveProgressElement.style.color = color.Value;
+            }
         }
         else
         {

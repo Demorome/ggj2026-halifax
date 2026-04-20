@@ -66,9 +66,9 @@ namespace LevelObjectives
 
             _gameManager.ChangeObjectiveUI(
                 objectiveInfo.GetCurrentMessage(),
-                uiColor,
                 objectiveInfo.GetCurrentEmoji(),
-                objectiveInfo.GetProgressText()
+                objectiveInfo.GetProgressText(),
+                uiColor
             );
         }
 
@@ -100,8 +100,21 @@ namespace LevelObjectives
         {
             if (objectives.TryGetValue(objectiveType, out var objectiveInfo))
             {
-                objectiveInfo.IncrementProgress();
-                _gameManager.UpdateObjectiveProgress(objectiveType, objectiveInfo.GetProgressText());
+                objectiveInfo.TryIncrementProgress();
+                if (!objectiveInfo.IsChallengeComplete)
+                {
+                    _gameManager.UpdateObjectiveProgress(objectiveType, objectiveInfo.GetProgressText());
+                }
+                else
+                {
+                    // Message and emoji may change upon objective completion.
+                    _gameManager.ChangeObjectiveUI(
+                        objectiveInfo.GetCurrentMessage(),
+                        objectiveInfo.GetCurrentEmoji(),
+                        objectiveInfo.GetProgressText(),
+                        null
+                    );
+                }
             }
             else
             {

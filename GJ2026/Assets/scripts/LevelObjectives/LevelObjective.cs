@@ -25,12 +25,14 @@ namespace LevelObjectives
 
         public bool IsChallengeComplete => currentProgress >= progressRequired;
 
-        public void IncrementProgress()
+        public bool TryIncrementProgress()
         {
             if (!IsChallengeComplete)
             {
                 currentProgress += 1;
+                return true;
             }
+            return false;
         }
 
         public string GetCurrentMessage()
