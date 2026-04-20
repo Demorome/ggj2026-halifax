@@ -106,8 +106,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("RnanaanN!N!");
-
         // Set event handlers
         SceneManager.sceneLoaded += OnSceneLoaded;
 
