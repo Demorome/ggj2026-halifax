@@ -4,6 +4,8 @@ namespace Components
 {
     public class MoveSpeedComponent : MonoBehaviour
     {
-        public float speed = 10f;
+        public bool canMove = true;
+        public float baseSpeed = 10f;
+        public float Speed => canMove ? baseSpeed : 0.0f;
     }
 }

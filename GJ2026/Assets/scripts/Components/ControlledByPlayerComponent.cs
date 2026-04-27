@@ -42,7 +42,7 @@ namespace Components
             // Rotate facing direction based on horizontal axis input
             transform.Rotate(
                 0,
-                Input.GetAxis("Horizontal") * Time.deltaTime * rotateSpeed.speed,
+                Input.GetAxis("Horizontal") * Time.deltaTime * rotateSpeed.Speed,
                 0
             );
 
@@ -50,7 +50,7 @@ namespace Components
             transform.Translate(
                 0,
                 0,
-                Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed.speed,
+                Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed.Speed,
                 Space.Self
             );
 

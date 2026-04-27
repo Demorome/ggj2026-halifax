@@ -53,7 +53,10 @@ namespace Components
                 defaultPlayerForm = FindAnyObjectByType<PlayerDefaultFormComponent>();
             }
 
-            CurrentPlayerForm = defaultPlayerForm.gameObject;
+            if (!CurrentPlayerForm)
+            {
+                CurrentPlayerForm = defaultPlayerForm.gameObject;
+            }
 
             if (!defaultPlayerForm)
             {
@@ -185,14 +188,20 @@ namespace Components
 
         private void TransferPlayerInteractionZone(GameObject oldForm, GameObject newForm)
         {
-            // Always expect the zone interaction child to be the last child, i.e. bottom-most.
-            var zoneTransform = oldForm.transform.GetChild(oldForm.transform.childCount - 1);
-            var zoneObject = zoneTransform.gameObject;
-            if (zoneObject.TryGetComponent(typeof(InteractionZoneComponent), out var zoneComponent))
+            var zoneComponent = oldForm.GetComponentInChildren<InteractionZoneComponent>(true);
+            if (zoneComponent)
             {
+                var zoneTransform = zoneComponent.transform;
                 zoneTransform.SetParent(newForm.transform);
                 zoneTransform.position = newForm.transform.position;
-                ((InteractionZoneComponent)zoneComponent).Reset();
+
+                if (newForm == defaultPlayerForm.gameObject)
+                {
+                    // Force-activate the zone in case the host had it disabled.
+                    zoneComponent.gameObject.SetActive(true);
+                }
+
+                zoneComponent.Reset();
             }
             else
             {
