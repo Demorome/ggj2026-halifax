@@ -151,6 +151,11 @@ namespace Components
             AddPlayerRelatedComponentsToNewForm(targetToPossess);
             KnockEnemyUnconscious(targetToPossess);
             TransferThisComponentToTarget(targetToPossess);
+            TogglePlayerObjectHostAdvantages(
+                defaultPlayerForm.gameObject,
+                targetToPossess,
+                true
+            );
 
             CurrentPlayerForm = targetToPossess;
             OnPlayerEnterHost?.Invoke();
@@ -181,9 +186,26 @@ namespace Components
             RemovePlayerRelatedComponentsFromOldHost(previousHost);
             KnockEnemyUnconscious(previousHost);
             TransferThisComponentToTarget(newForm);
+            TogglePlayerObjectHostAdvantages(newForm, previousHost, false);
 
             CurrentPlayerForm = newForm;
             OnPlayerExitHost?.Invoke();
+        }
+
+        private void TogglePlayerObjectHostAdvantages(
+            GameObject player,
+            GameObject host,
+            bool give)
+        {
+            if (give)
+            {
+                var drainLife = (DrainHealthOverTimeComponent)host.AddComponent(typeof(DrainHealthOverTimeComponent));
+                drainLife.SetRecipient(player);
+            }
+            else // Remove.
+            {
+                Destroy(host.GetComponent(typeof(DrainHealthOverTimeComponent)));
+            }
         }
 
         private void TransferPlayerInteractionZone(GameObject oldForm, GameObject newForm)
@@ -218,7 +240,6 @@ namespace Components
                 newForm.AddComponent(typeof(CameraTargetComponent));
                 newForm.AddComponent(typeof(ControlledByPlayerComponent));
                 newForm.AddComponent(typeof(OnHostLifeChangeComponent));
-                newForm.AddComponent(typeof(DrainHealthOverTimeComponent));
             }
         }
         private void RemovePlayerRelatedComponentsFromOldHost(GameObject oldHost)
@@ -226,7 +247,6 @@ namespace Components
             Destroy(oldHost.GetComponent(typeof(CameraTargetComponent)));
             Destroy(oldHost.GetComponent(typeof(ControlledByPlayerComponent)));
             Destroy(oldHost.GetComponent(typeof(OnHostLifeChangeComponent)));
-            Destroy(oldHost.GetComponent(typeof(DrainHealthOverTimeComponent)));
         }
 
         private void KnockEnemyUnconscious(GameObject enemy)
