@@ -311,6 +311,7 @@ public class GameManager : MonoBehaviour
                 break;
             case PlayingState.GameOver:
                 // Handle leaving the game over screen
+                Time.timeScale = 1f; // Resume time
                 Destroy(GameOverScreen);
                 GameOverScreen = null;
                 break;
@@ -331,6 +332,8 @@ public class GameManager : MonoBehaviour
                 PauseScreen = Instantiate(PauseScreenPrefab);
                 break;
             case PlayingState.GameOver:
+                Time.timeScale = 0f; // Stop time
+                // TODO: Delay showing the game over screen!
                 GameOverScreen = Instantiate(GameOverScreenPrefab);
                 break;
         }

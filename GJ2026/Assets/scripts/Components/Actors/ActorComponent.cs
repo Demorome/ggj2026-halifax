@@ -9,6 +9,7 @@ namespace Components.Actors
     [RequireComponent(typeof(MoveSpeedComponent))]
     [RequireComponent(typeof(HealthComponent))]
     [RequireComponent(typeof(MassComponent))]
+    [RequireComponent((typeof(AudioSource)))]
     public class ActorComponent : MonoBehaviour
     {
         private void Awake()
