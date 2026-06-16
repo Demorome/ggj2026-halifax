@@ -223,6 +223,8 @@ public class GameManager : MonoBehaviour
     {
         var actorType = CanPossessComponent.GetCurrentPlayerActorType();
         var color = ActorTypeComponent.ColorForActorType(actorType);
+        // Add transparency.
+        color = new Color(color.r, color.g, color.b, 0.75f);
         playerHostHealthBarFill.style.unityBackgroundImageTintColor = color;
     }
 
